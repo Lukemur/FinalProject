@@ -1,0 +1,2 @@
+# FinalProject
+Stockspotter final project
