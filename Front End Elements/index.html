@@ -5,6 +5,14 @@
         <title>Website Mockup</title>
         <meta name="contains possible code to go into final page" content="Website Mockup">
         <link rel="stylesheet" href="style.css" />
+
+        <style>
+          #chartContainer {
+            width: 400px;
+            height: 400px;
+          }
+        </style>
+        
     </header>
     
 <body>
@@ -56,6 +64,22 @@
                 <a href="#">Link 3</a>
               </div>
             </div>
+
+            <h1>Interactable Pie Chart</h1>
+            <div id="chartContainer"></div>
+
+            <form id="dataForm">
+              <label for="title">Title:</label>
+              <input type="text" id="title" placeholder="Enter title">
+              <label for="money">Money:</label>
+              <input type="number" id="money" placeholder="Enter amount">
+              <button type="button" onclick="addData()">Add</button>
+            </form>
+          
+            <ul id="dataList"></ul>
+          
+            <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+            <script src="script.js"></script>
     </body>
   
 </html>
