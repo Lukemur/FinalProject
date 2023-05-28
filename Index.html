@@ -6,11 +6,11 @@
     <link rel="stylesheet" href="style.css">
   </head>
   <body>  
-    <marquee style="color:rgb(0, 0, 0);font-size:40px;" class="scroller">Item 1: up%   Item 2: up%   Item 3: up%   Item 4: up%   Item 5: up%   Item 6: up%   Item 7: up%   Item 8: up%  </marquee>
-    <h1 class="title">STOCK SPOTTER</h1>
-    <a style = "position:absolute; right:80px"><img src="logo.PNG" alt="Logo" width="150" height="100"></a>
+    <marquee style="color:rgb(0, 0, 0);font-size:40px;" class="scroller">Item 1: up%   Item 2: up%   Item 3: up%   Item 4: up%   Item 5: up%   Item 6: up%   Item 7: up%   Item 8: up%  </marquee> <!--Scroller-->
+    <h1 class="title">STOCK SPOTTER</h1> <!--title-->
+    <a style = "position:absolute; right:80px"><img src="logo.PNG" alt="Logo" width="150" height="100"></a>  <!--Logo-->
   <div id="container"></div>
-      <section class="livegraph">
+      <section class="livegraph"><!--section for stock graph-->
         <script src="https://cdn.anychart.com/releases/8.11.0/js/anychart-core.min.js"></script>
         <script src="https://cdn.anychart.com/releases/8.11.0/js/anychart-stock.min.js"></script>
         <script src="https://cdn.anychart.com/releases/8.11.0/js/anychart-data-adapter.min.js"></script>
@@ -20,53 +20,57 @@
     
         <link href="https://cdn.anychart.com/releases/8.11.0/css/anychart-ui.min.css" type="text/css" rel="stylesheet">
         <link href="https://cdn.anychart.com/releases/8.11.0/fonts/css/anychart-font.min.css" type="text/css" rel="stylesheet">
-      </section>
+      </section><!--end of section for stock graph-->
       <section class="Stockpicker"> <!--Beginning of stock picker class-->
         <div class="menu">
           <div class="category" onmouseover="showDropdown('category1')" onmouseout="hideDropdown('category1')">
             <span>RSI</span>
             <div id="category1" class="dropdown">
-              <a>RSI Overbought <input type="number" placeholder="# stocks to view" class="myinput1"> <button class="mybutton"> Scan </button></button></a>
-              <a>RSI Underbought <input type="number" placeholder="# stocks to view" class="myinput1"> <button class="mybutton"> Scan </button></a>
+              <a>RSI Overbought <input type="number" placeholder="# stocks to view" class="myinput1" id="stv1"> <button class="mybutton" id="stvb1"> Scan </button></a>
+              <a>RSI Underbought <input type="number" placeholder="# stocks to view" class="myinput1" id="stv2"> <button class="mybutton" id="stvb2"> Scan </button></a>
             </div>
           </div>
           <div class="category" onmouseover="showDropdown('category2')" onmouseout="hideDropdown('category2')">
             <span>MACD</span>
             <div id="category2" class="dropdown">
-              <a>MACD Strong Uptrend <input type="number" placeholder="# stocks to view" class="myinput1"> <button class="mybutton"> Scan </button></a>
-              <a>MACD Strong Downtrend <input type="number" placeholder="# stocks to view" class="myinput1"> <button class="mybutton"> Scan </button></a>
+              <a>MACD Strong Uptrend <input type="number" placeholder="# stocks to view" class="myinput1" id="stv3"> <button class="mybutton" id="stvb3"> Scan </button></a>
+              <a>MACD Strong Downtrend <input type="number" placeholder="# stocks to view" class="myinput1" id="stv4"> <button class="mybutton" id="stvb4"> Scan </button></a>
             </div>
           </div>
           <div class="category" onmouseover="showDropdown('category3')" onmouseout="hideDropdown('category3')">
             <span>SMA</span>
             <div id="category3" class="dropdown">
-              <a>Ticker <input placeholder="Ticker" class="myinput2"> <button class="mybutton"> Scan </button></a>
-              <label for="select-option">Time Period:</label>
-              <select id="select-option">
-                <option value="option1">Option 1</option>
-                <option value="option2">Option 2</option>
-                <option value="option3">Option 3</option>
-                <option value="option4">Option 4</option>
+              <a>Ticker <input placeholder="Ticker" class="myinput2" id="tickSMA"> 
+              <label for="SMAtime">Time Period:</label>
+              <select id="SMAtime">
+                <option value="1 Week">1 Week</option>
+                <option value="3 Months">3 Months</option>
+                <option value="1 Year">1 Year</option>
+                <option value="5 Years">5 Years</option>
               </select>
+              <button class="mybutton" id="SMAb"> Scan </button></a>
             </div>
           </div>
           <div class="category" onmouseover="showDropdown('category4')" onmouseout="hideDropdown('category4')">
             <span>EMA</span>
             <div id="category4" class="dropdown">
-              <a>Ticker <input placeholder="Ticker" class="myinput2"> <button class="mybutton"> Scan </button></a>
+              <a>Ticker <input placeholder="Ticker" class="myinput2" id="tickEMA"> </a>
               <label for="select-option">Time Period:</label>
-              <select id="select-option">
-                <option value="option1">Option 1</option>
-                <option value="option2">Option 2</option>
-                <option value="option3">Option 3</option>
-                <option value="option4">Option 4</option>
+              <select id="EMAtime">
+                <option value="1 Week">1 Week</option>
+                <option value="3 Months">3 Months</option>
+                <option value="1 Year">1 Year</option>
+                <option value="5 Years">5 Years</option>
               </select>
+              <button class="mybutton" id="EMAb"> Scan </button>
             </div>
           </div>
         </div>
       
         <div id="text-container">
           <div id="text-content"></div>
+          <img src="sponchbob.gif" width="300px" height="300px" id="sponch">
+          <img src="troll.gif" width="300px" height="300px" id="troll">
         </div>
       </section> <!--End of stock picker class-->
       

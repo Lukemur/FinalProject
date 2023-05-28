@@ -80,11 +80,109 @@ for (var i = 0; i < scan.length; i++) {
 }
  // Get the text content container
  const textContent = document.getElementById('text-content');
+ 
+ function clearStockLines() {
+  while (textContent.firstChild) {
+    textContent.removeChild(textContent.firstChild);
+  }
+}
 
- // Generate and append the lines
- for (let i = 1; i <= 100; i++) {
-     const stockLine = document.createElement('p');
-     stockLine.textContent = `stock ${i}`;
-     textContent.appendChild(stockLine);
- }
+function sponch() {
+  var gifElement = document.getElementById("sponch");
+  gifElement.style.display = "block";
+}
+
+function hidesponch() {
+  var gifElement = document.getElementById("sponch");
+  gifElement.style.display = "none";
+}
+
+
+var scanRSIOB = document.getElementById("stvb1");//create var for RSI overbought
+
+scanRSIOB.addEventListener("click", function() {//Create event listner that prints out the number of stocks searched for according to input value
+  var RSIOBnum = document.getElementById("stv1").value;
+  console.log("You have searched for " + RSIOBnum + " stocks with an overbought RSI");
+  clearStockLines();
+  hidesponch();
+
+  for (let i = 1; i <= RSIOBnum; i++) {
+    const stockLine = document.createElement('p');
+    stockLine.textContent = `stock ${i}`;
+    textContent.appendChild(stockLine);
+}
+});
+
+var scanRSIUB = document.getElementById("stvb2");//create var for RSI underbought
+
+scanRSIUB.addEventListener("click", function() {//Create event listner that prints out the number of stocks searched for according to input value
+  var RSIUBnum = document.getElementById("stv2").value;
+  console.log("You have searched for " + RSIUBnum + " stocks with an underbought RSI");
+  clearStockLines();
+  hidesponch();
+
+  for (let i = 1; i <= RSIUBnum; i++) {
+    const stockLine = document.createElement('p');
+    stockLine.textContent = `stock ${i}`;
+    textContent.appendChild(stockLine);
+}
+});
+
+var scanMACDUT = document.getElementById("stvb3");//create var for MACD strong uptrend
+
+scanMACDUT.addEventListener("click", function() {//Create event listner that prints out the number of stocks searched for according to input value
+  var MACDUTnum = document.getElementById("stv3").value;
+  console.log("You have searched for " + MACDUTnum + " stocks with an strong uptrend for MACD");
+  clearStockLines();
+  hidesponch();
+
+  for (let i = 1; i <= MACDUTnum; i++) {
+    const stockLine = document.createElement('p');
+    stockLine.textContent = `stock ${i}`;
+    textContent.appendChild(stockLine);
+}
+  
+});
+
+var scanMACDDT = document.getElementById("stvb4");//create var for MACD strong downtrend
+
+scanMACDDT.addEventListener("click", function() {//Create event listner that prints out the number of stocks searched for according to input value
+  var MACDDTnum = document.getElementById("stv4").value;
+  console.log("You have searched for " + MACDDTnum + " stocks with an strong downtrend for MACD");
+  clearStockLines();
+  hidesponch();
+
+  for (let i = 1; i <= MACDDTnum; i++) {
+    const stockLine = document.createElement('p');
+    stockLine.textContent = `stock ${i}`;
+    textContent.appendChild(stockLine);
+}
+});
+
+
+var scanSMA = document.getElementById("SMAb");
+
+scanSMA.addEventListener("click", function(){
+  var tickSMA = document.getElementById("tickSMA").value;
+  var timeSMA = document.getElementById("SMAtime").value;
+  console.log(`you have searched for ${tickSMA}, showing a simple moving average with a time period of ${timeSMA}`);
+  clearStockLines();
+  hidesponch();
+  if (tickSMA === "sponch") {
+    sponch();
+  }
+})
+
+var scanEMA = document.getElementById("EMAb");
+
+scanEMA.addEventListener("click", function(){
+  var tickEMA = document.getElementById("tickEMA").value;
+  var timeEMA = document.getElementById("EMAtime").value;
+  console.log(`you have searched for ${tickEMA}, showing an exponential moving average with a time period of ${timeEMA}`);
+  clearStockLines();
+  hidesponch();
+  if (tickEMA === "sponch") {
+    sponch();
+  }
+})
 //end of JS for stockpicker drop-down menu

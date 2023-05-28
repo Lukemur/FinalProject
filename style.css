@@ -10,7 +10,7 @@
   display: inline-block;
 }
 html{
-  height: 2000px;
+  height: 100%;
 }
 .scroller{
   /*position: fixed;*/
@@ -83,6 +83,17 @@ html{
 }
 .myinput2 {
   width: 60px;
+}
+.mybutton {
+background-color: rgb(79, 212, 79);
+}
+#sponch {
+  display: none;
+  z-index: 1000;
+}
+#troll {
+  display: none;
+  z-index: 1000;
 }
 /*End of css for drop-down menu*/
 
