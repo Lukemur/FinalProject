@@ -56,3 +56,35 @@ anychart.onDocumentReady(function () {
     }
   );
 });
+
+// Beginning of JS for stockpicker drop-down menu
+function showDropdown(category) {
+  var dropdown = document.getElementById(category);
+  dropdown.style.display = "block";
+}
+
+function hideDropdown(category) {
+  var dropdown = document.getElementById(category);
+  dropdown.style.display = "none";
+}
+
+function hideMenu() {
+  var menu = document.querySelector(".menu");
+  menu.style.display = "none";
+}
+var scan = document.getElementsByClassName("mybutton");
+for (var i = 0; i < scan.length; i++) {
+  scan[i].addEventListener("click", function() {
+    console.log("Button clicked!");
+  });
+}
+ // Get the text content container
+ const textContent = document.getElementById('text-content');
+
+ // Generate and append the lines
+ for (let i = 1; i <= 100; i++) {
+     const stockLine = document.createElement('p');
+     stockLine.textContent = `stock ${i}`;
+     textContent.appendChild(stockLine);
+ }
+//end of JS for stockpicker drop-down menu
