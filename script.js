@@ -120,6 +120,10 @@ scanRSIOB.addEventListener("click", function() {//Create event listner that prin
   // xhr1.open("GET", `http://localhost:5000/RSI`);
   // xhr1.send();
 
+  // xhr1.onload = function() {
+  //   const body = JSON.parse(xhr1.responseText);
+  // }
+
   
 
   var RSIOBnum = document.getElementById("stv1").value;
