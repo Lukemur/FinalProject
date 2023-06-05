@@ -1,4 +1,5 @@
 from flask import Flask, jsonify, request
+import numpy as np
 import pandas as pd
 import yfinance as yf
 from datetime import datetime, timedelta
@@ -12,6 +13,15 @@ app = Flask(__name__)
 #     tickers = yf.Tickers('msft aapl goog') # include tickers for all stocks in S&P or however many to load
 #     return tickers;
 
+# helps to retrieve dataframes of stock information
+def get_stock_data(stock, startdate, enddate, period, interval):
+    ticker = stock
+    yf.pdr_override()
+    df = yf.download(tickers=stock, start=startdate, end=enddate, interval=interval,period=period)
+    df.reset_index(inplace=True) 
+    df['date'] = df['Date'].dt.date
+    
+    return df
 
 # def RSI(data, window=14, adjust=False):
 #     delta = data['Close'].diff(1).dropna()
@@ -50,16 +60,13 @@ def SMA():
     time = request.args.get('SMAtime')
     time = int(time) # convert time to integer
 
-    print(ticker)
-    print(time)
-
 
     # initialize variables for API call
     end = datetime.now() # get current date today
     start = end - timedelta(weeks=time) # find start date by using timedelta() to subract period from current date to 
 
     # use yfinance API to load information for the stock
-    reqTick = yf.download(ticker, start, end, interval='1d')
+    reqTick = get_stock_data(ticker,start,end,"60d","1d")
     reqTick.head()
 
     # define list for short (20 day) and long (50 day) SMAs
@@ -67,8 +74,15 @@ def SMA():
 
     # iterate over SMAs and use rolling() function in the pre-defined time window for the adjusted close 
     # price which is in the 5th column of the data frame; each SMA will is then added as a new column
-    for i in SMAs:
-        reqTick["SMA_"+str(i)]= reqTick.iloc[:,4].rolling(window=i).mean()
+    # for i in SMAs:
+    #     = reqTick.iloc[:,4].rolling(i).mean()
+
+    print(reqTick['Close'])
+    print(reqTick['Close'].rolling(13))
+    print(reqTick['Close'].rolling(13).mean())
+
+    reqTick["SMA_20"] = reqTick['Close'].rolling(20).mean()
+    reqTick["SMA_50"] = reqTick['Close'].rolling(50).mean()
 
     print(reqTick)
 
