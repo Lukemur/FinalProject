@@ -1,3 +1,17 @@
+// Maybe use this onload function to load all tickers in S&P and send to frontend, minimalizes API calls
+
+// window.onload = function() { // when website loads run this function (this is called an anonymous function)
+//   const date = new Date(); // use built in JS func to getcurrent date
+//   // parse date into a nice string
+//   const dateString = (date.getMonth() + 1) + '/' + date.getDate() + '/' + date.getFullYear();
+//   document.getElementById('date').innerHTML = dateString; // set the .date HTML text to our dateString
+//   if ("geolocation" in navigator) { // if browser supports location
+//   navigator.geolocation.getCurrentPosition(success); // call 'success' function
+// } else { // if location does not exist
+//   console.log("Geolocation is not available in your browser."); // print message to user
+// }
+// }
+
 anychart.onDocumentReady(function () {
   anychart.data.loadCsvFile(
     'https://gist.githubusercontent.com/shacheeswadia/cd509e0b0c03964ca86ae7d894137043/raw/5f336c644ad61728dbac93026f3268b86b8d0680/teslaDailyData.csv',
@@ -97,26 +111,31 @@ function hidesponch() {
   gifElement.style.display = "none";
 }
 
+// Backend Calls for Technical Indicators ------------------------------------------------------------------
 
 var scanRSIOB = document.getElementById("stvb1");//create var for RSI overbought
 
 scanRSIOB.addEventListener("click", function() {//Create event listner that prints out the number of stocks searched for according to input value
+  // const xhr1 = new XMLHttpRequest();
+  // xhr1.open("GET", `http://localhost:5000/RSI`);
+  // xhr1.send();
+
+  // xhr1.onload = function() {
+  //   const body = JSON.parse(xhr1.responseText);
+  // }
+
+  
+
   var RSIOBnum = document.getElementById("stv1").value;
   console.log("You have searched for " + RSIOBnum + " stocks with an overbought RSI");
   clearStockLines();
   hidesponch();
 
-// Sort the JSON data by RSIOB in descending order
-jsonData.sort(function(a, b) {
-  return b.RSIOB - a.RSIOB;
-});
-
-// Display the top RSIOBnum tickers and their corresponding values
-for (let i = 0; i < RSIOBnum && i < jsonData.length; i++) {
-  const stockLine = document.createElement('p');
-  stockLine.textContent = `Ticker: ${jsonData[i].Ticker} | RSI Overbought: ${jsonData[i].RSIOB}`;
-  textContent.appendChild(stockLine);
-}
+  for (let i = 1; i <= RSIOBnum; i++) {
+    const stockLine = document.createElement('p');
+    stockLine.textContent = `stock ${i}`;
+    textContent.appendChild(stockLine);
+  }
 });
 
 var scanRSIUB = document.getElementById("stvb2");//create var for RSI underbought
@@ -193,21 +212,20 @@ scanSMA.addEventListener("click", function(){
   console.log(`you have searched for ${tickEMA}, showing an exponential moving average with a short time period of ${timeSMAsp} days and a long moving average of ${timeSMAlp} days`);
   clearStockLines();
   hidesponch();
-   if (tickSMA === "sponch") {
-   sponch();
-   }
+  if (tickSMA === "sponch") {
+    sponch();
+  }
 
-   let foundMatch = false;
-   for (let i = 0; i < jsonData.length; i++) {
-   if (jsonData[i].Ticker == tickSMA) {
-      foundMatch = true;
-      break;}}
-  if (foundMatch) {
-      console.log("We found the stock!");
-}
-      else {
-      console.log("We could not find the stock, make sure your search is case-sensitive");
-}
+  // request for SMA data
+  const xhr1 = new XMLHttpRequest();
+  xhr1.open("GET", `http://localhost:5000/SMA?tickSMA=${tickSMA}&SMAtime=${SMAtime}`);
+  xhr1.send();
+
+  xhr1.onload = function() {
+    const body = JSON.parse(xhr1.responseText); // parse response
+
+    // may need to implement the simple movie average function here
+  }
 })
 
 var scanEMA = document.getElementById("EMAb");
