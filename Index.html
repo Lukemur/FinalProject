@@ -35,6 +35,7 @@
     <!--End of Pie Chart-->
     
   <div id="container"></div>
+    <script src=""></script>
       <section class="livegraph"><!--section for stock graph-->
         <script src="https://cdn.anychart.com/releases/8.11.0/js/anychart-core.min.js"></script>
         <script src="https://cdn.anychart.com/releases/8.11.0/js/anychart-stock.min.js"></script>
@@ -66,13 +67,18 @@
             <span>SMA</span>
             <div id="category3" class="dropdown">
               <a>Ticker <input placeholder="Ticker" class="myinput2" id="tickSMA"> 
-              <label for="SMAtime">Time Period:</label>
-              <select id="SMAtime">
-                <option value="1 Week">1 Week</option>
-                <option value="3 Months">3 Months</option>
-                <option value="1 Year">1 Year</option>
-                <option value="5 Years">5 Years</option>
-              </select>
+                <label for="SMAtimesp">Time Period:</label>
+                <select id="SMAtimesp">
+                  <option value=20>20 day</option>
+                  <option value=50>50 day</option>
+                  <option value=100>100 day</option>
+                </select>
+                <label for="SMAtimelp">Time Period:</label>
+                <select id="SMAtimelp">
+                  <option value=250>250 day</option>
+                  <option value=200>200 day</option>
+                  <option value=150>150 day</option>
+                </select> 
               <button class="mybutton" id="SMAb"> Scan </button></a>
             </div>
           </div>
@@ -80,13 +86,18 @@
             <span>EMA</span>
             <div id="category4" class="dropdown">
               <a>Ticker <input placeholder="Ticker" class="myinput2" id="tickEMA"> </a>
-              <label for="select-option">Time Period:</label>
-              <select id="EMAtime">
-                <option value="1 Week">1 Week</option>
-                <option value="3 Months">3 Months</option>
-                <option value="1 Year">1 Year</option>
-                <option value="5 Years">5 Years</option>
+              <label for="EMAtimesp">Time Period:</label>
+              <select id="EMAtimesp">
+                <option value=20>20 day</option>
+                <option value=50>50 day</option>
+                <option value=100>100 day</option>
               </select>
+              <label for="EMAtimelp">Time Period:</label>
+              <select id="EMAtimelp">
+                <option value=250>250 day</option>
+                <option value=200>200 day</option>
+                <option value=150>150 day</option>
+              </select> 
               <button class="mybutton" id="EMAb"> Scan </button>
             </div>
           </div>
