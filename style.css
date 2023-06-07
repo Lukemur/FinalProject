@@ -5,6 +5,7 @@
   margin-right: 10px;
   margin-top: 70px;
   float: right;
+
 }
 .container {
   text-align: center;
@@ -128,7 +129,7 @@ background-color: rgb(79, 212, 79);
 
 #dataForm{
   width: 260px;
-  height: 75px;
+  height: 200px;
   float : left;
 }
 
