@@ -209,17 +209,30 @@ scanSMA.addEventListener("click", function(){
   var tickSMA = document.getElementById("tickSMA").value;
   var timeSMAsp = document.getElementById("SMAtimesp").value;
   var timeSMAlp = document.getElementById("SMAtimelp").value;
-  console.log(`you have searched for ${tickEMA}, showing an exponential moving average with a short time period of ${timeSMAsp} days and a long moving average of ${timeSMAlp} days`);
+  console.log(`you have searched for ${tickSMA}, showing an exponential moving average with a short time period of ${timeSMAsp} days and a long moving average of ${timeSMAlp} days`);
   clearStockLines();
   hidesponch();
   if (tickSMA === "sponch") {
     sponch();
   }
+  let foundMatch = false;
+  for (let i = 0; i < jsonData.length; i++) {
+  if (jsonData[i].Ticker == tickSMA) {
+     foundMatch = true;
+     break;}}
+ if (foundMatch) {
+     console.log("We found your stock!");
+}
+     else {
+     console.log("We could not find your stock, make sure your search is case-sensitive");
+}
+
+  
 
   // request for SMA data
   const xhr1 = new XMLHttpRequest();
-  xhr1.open("GET", `http://localhost:5000/SMA?tickSMA=${tickSMA}&SMAtime=${SMAtime}`);
-  xhr1.send();
+  xhr1.open("GET", `http://localhost:5000/SMA?tickSMA=${tickSMA}&SMAtimesp=${SMAtimesp}&SMAtimelp=${SMAtimelp}`);
+  //xhr1.send();
 
   xhr1.onload = function() {
     const body = JSON.parse(xhr1.responseText); // parse response
