@@ -7,33 +7,27 @@
     <!--Resize the graph -->
     <style>
       #chartContainer {
-        width: 400px;
-        height: 400px;
+        width: 450px;
+        height: 450px;
       }
     </style>
     <!--end-->
   </head>
   <body>  
+
+    
+    <img src="logo.gif" class="logo" alt="Logo">
+
+
+    <div class="title"><!--title--> 
+    <h1>Stock Spotter</h1></div>
+
+    
+
+    <!--Banner-->
     <marquee style="color:rgb(0, 0, 0);font-size:40px;" class="scroller">Item 1: up%   Item 2: up%   Item 3: up%   Item 4: up%   Item 5: up%   Item 6: up%   Item 7: up%   Item 8: up%  </marquee> <!--Scroller-->
-    <h1 class="title">STOCK SPOTTER</h1> <!--title-->
-    <a style = "position:absolute; right:80px"><img src="logo.PNG" alt="Logo" width="150" height="100"></a>  <!--Logo-->
-
-    <!--Pie Chart-->
-    <div id="chartContainer"></div>
-
-    <form id="dataForm">
-      <label for="title">Title:</label>
-      <input type="text" id="title" placeholder="Enter title">
-      <label for="money">Money:</label>
-      <input type="number" id="money" placeholder="Enter amount">
-      <button type="button" onclick="addData()">Add</button>
-    </form>
-  
-    <ul id="dataList"></ul>
-  
-    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-    <!--End of Pie Chart-->
-  <div id="container"></div>
+    
+  <div id="container">
     <script src=""></script>
       <section class="livegraph"><!--section for stock graph-->
         <script src="https://cdn.anychart.com/releases/8.11.0/js/anychart-core.min.js"></script>
@@ -45,10 +39,10 @@
     
         <link href="https://cdn.anychart.com/releases/8.11.0/css/anychart-ui.min.css" type="text/css" rel="stylesheet">
         <link href="https://cdn.anychart.com/releases/8.11.0/fonts/css/anychart-font.min.css" type="text/css" rel="stylesheet">
-      </section><!--end of section for stock graph-->
+      </section></div><!--end of section for stock graph-->
 
 
-      <section class="Stockpicker"> <!--Beginning of stock picker class-->
+      <div id="Stockp"> <!--Beginning of stock picker class-->
         <div class="menu">
           <div class="category" onmouseover="showDropdown('category1')" onmouseout="hideDropdown('category1')">
             <span>RSI</span>
@@ -108,8 +102,26 @@
           <div id="text-content"></div>
           <img src="sponchbob.gif" width="300px" height="300px" id="sponch">
         </div>
-      </section> <!--End of stock picker class-->
-      
+      </div> <!--End of stock picker class-->
+
+    <!--Pie Chart-->
+    <div id="chartContainer"></div>
+
+    <form id="dataForm">
+      <label for="title">Stock:</label>
+      <input type="text" id="title" placeholder="Enter Stock Symbol">
+      <label for="money">Shares:</label>
+      <input type="number" id="money" placeholder="Enter Number of Shares">
+      <button type="button" onclick="addData()">Add</button>
+    
+  
+    <ul id="dataList"></ul>
+  
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script></form>
+    <!--End of Pie Chart-->
+    
+
 <body>
+  
   <script src="script.js"></script>
 </html>
