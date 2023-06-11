@@ -11,7 +11,6 @@
 //   console.log("Geolocation is not available in your browser."); // print message to user
 // }
 // }
-
 // Beginning of JS for stockpicker drop-down menu
 function showDropdown(category) {
   var dropdown = document.getElementById(category);
