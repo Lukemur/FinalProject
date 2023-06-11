@@ -14,12 +14,11 @@ app = Flask(__name__)
 #     return tickers;
 
 # helps to retrieve dataframes of stock information
-def get_stock_data(stock, startdate, enddate, period, interval):
+def get_stock_data(stock, period, interval):
     ticker = stock
     yf.pdr_override()
-    df = yf.download(tickers=stock, start=startdate, end=enddate, interval=interval,period=period)
+    df = yf.download(tickers=stock, interval=interval,period=period)
     df.reset_index(inplace=True) 
-    df['date'] = df['Date'].dt.date
     
     return df
 
@@ -45,9 +44,40 @@ def get_stock_data(stock, startdate, enddate, period, interval):
 def hello():
     return 'Hello, Flask!'
 
-# @app.route('/RSI')
-# def MACD():
-#     return 'Hello, RSI!'
+@app.route('/RSI')
+def RSI():
+    # get arguments from frontend
+    scan_num = request.args.get('RSIUBnum')
+    # time = int(time) # convert time to integer
+
+
+    # initialize variables for API call
+    # end = datetime.now() # get current date today
+    # start = end - timedelta(weeks=time) # find start date by using timedelta() to subract period from current date to 
+
+    # use yfinance API to load information for the stock
+    reqTick = get_stock_data("SPY AAPL", "1y","1d")
+    
+    # reqTick.head()
+    # define list for short (20 day) and long (50 day) SMAs
+    # SMAs=[20, 50]
+
+    # iterate over SMAs and use rolling() function in the pre-defined time window for the adjusted close 
+    # price which is in the 5th column of the data frame; each SMA will is then added as a new column
+    # for i in SMAs:
+    #     = reqTick.iloc[:,4].rolling(i).mean()
+
+    # print(reqTick['Close'])
+    # print(reqTick['Close'].rolling(13))
+    # print(reqTick['Close'].rolling(13).mean())
+
+    # reqTick["SMA_20"] = reqTick['Close'].rolling(20).mean()
+    # reqTick["SMA_50"] = reqTick['Close'].rolling(50).mean()
+
+    print(reqTick.head())
+    print(reqTick.head().to_json(orient="records"))
+
+    return jsonify(reqTick)
 
 # @app.route('/MACD')
 # def MACD():
@@ -57,36 +87,23 @@ def hello():
 def SMA():
     # get arguments from frontend
     ticker = request.args.get('tickSMA')
-    time = request.args.get('SMAtime')
-    time = int(time) # convert time to integer
-
+    shortMA = request.args.get('SMAtimesp')
+    longMA = request.args.get('SMAtimelp')
 
     # initialize variables for API call
-    end = datetime.now() # get current date today
-    start = end - timedelta(weeks=time) # find start date by using timedelta() to subract period from current date to 
+    # end = datetime.now() # get current date today
+    # start = end - timedelta(weeks=time) # find start date by using timedelta() to subract period from current date to 
 
     # use yfinance API to load information for the stock
-    reqTick = get_stock_data(ticker,start,end,"60d","1d")
-    reqTick.head()
+    reqTick = get_stock_data(ticker, "1y","1d")
 
-    # define list for short (20 day) and long (50 day) SMAs
-    SMAs=[20, 50]
+    # add short and long MA data to the dataframe
+    reqTick["SMA_" + shortMA] = reqTick['Close'].rolling(int(shortMA)).mean()
+    reqTick["SMA_" + longMA] = reqTick['Close'].rolling(int(longMA)).mean()
 
-    # iterate over SMAs and use rolling() function in the pre-defined time window for the adjusted close 
-    # price which is in the 5th column of the data frame; each SMA will is then added as a new column
-    # for i in SMAs:
-    #     = reqTick.iloc[:,4].rolling(i).mean()
-
-    print(reqTick['Close'])
-    print(reqTick['Close'].rolling(13))
-    print(reqTick['Close'].rolling(13).mean())
-
-    reqTick["SMA_20"] = reqTick['Close'].rolling(20).mean()
-    reqTick["SMA_50"] = reqTick['Close'].rolling(50).mean()
-
-    print(reqTick)
-
-    return jsonify(reqTick)
+    # convert dataframe reqTick to JSON and return response
+    json_response = reqTick.to_json(orient="records", indent=2)
+    return json_response
 
 # @app.route('/EMA')
 # def EMA():
