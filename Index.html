@@ -4,14 +4,7 @@
     <meta charset="utf-8">
     <title>JavaScript Stock Chart</title>
     <link rel="stylesheet" href="style.css">
-    <!--Resize the graph -->
-    <style>
-      #chartContainer {
-        width: 450px;
-        height: 450px;
-      }
-    </style>
-    <!--end-->
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts@3.27.3/dist/apexcharts.min.js"></script>
   </head>
   <body>  
 
@@ -27,19 +20,65 @@
     <!--Banner-->
     <marquee style="color:rgb(0, 0, 0);font-size:40px;" class="scroller">Item 1: up%   Item 2: up%   Item 3: up%   Item 4: up%   Item 5: up%   Item 6: up%   Item 7: up%   Item 8: up%  </marquee> <!--Scroller-->
     
-  <div id="container">
-    <script src=""></script>
-      <section class="livegraph"><!--section for stock graph-->
-        <script src="https://cdn.anychart.com/releases/8.11.0/js/anychart-core.min.js"></script>
-        <script src="https://cdn.anychart.com/releases/8.11.0/js/anychart-stock.min.js"></script>
-        <script src="https://cdn.anychart.com/releases/8.11.0/js/anychart-data-adapter.min.js"></script>
-    
-        <script src="https://cdn.anychart.com/releases/8.11.0/js/anychart-ui.min.js"></script>
-        <script src="https://cdn.anychart.com/releases/8.11.0/js/anychart-exports.min.js"></script>
-    
-        <link href="https://cdn.anychart.com/releases/8.11.0/css/anychart-ui.min.css" type="text/css" rel="stylesheet">
-        <link href="https://cdn.anychart.com/releases/8.11.0/fonts/css/anychart-font.min.css" type="text/css" rel="stylesheet">
-      </section></div><!--end of section for stock graph-->
+    <div class="chart-container"> <!--Start of candle graph-->
+      <div id="chart"></div>
+    </div>
+  
+    <script>
+// Define the variable 'data'
+var data;
+
+// Load the JSON data
+fetch('json.txt')
+  .then(response => response.json())
+  .then(jsonData => {
+    data = jsonData;
+
+    // Prepare the data for the candlestick graph
+    var series = [
+      {
+        data: data.map(item => ({
+          x: new Date(item.Date),
+          y: [
+            Math.round(item.Open),
+            Math.round(item.High),
+            Math.round(item.Low),
+            Math.round(item.Close),
+          ],
+        })),
+      },
+    ];
+
+    // Create the chart using ApexCharts
+    var options = {
+      series: series,
+      chart: {
+        type: 'candlestick',
+        height: 400,
+      },
+      title: {
+        text: 'Candlestick Chart',
+        align: 'center',
+      },
+      xaxis: {
+        type: 'datetime',
+      },
+      yaxis: {
+        labels: {
+          formatter: function (value) {
+            return Math.round(value);
+          },
+        },
+      },
+    };
+
+    var chart = new ApexCharts(document.querySelector('#chart'), options);
+    chart.render();
+  })
+  .catch(error => console.error(error));
+
+
+    </script> <!--End of candle graph-->
 
 
       <div id="Stockp"> <!--Beginning of stock picker class-->
