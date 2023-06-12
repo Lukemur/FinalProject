@@ -107,16 +107,16 @@ def SMA():
 @app.route('/EMA')
 def EMA():
     # get arguments from frontend
-    ticker = request.args.get('tickSMA')
-    shortMA = request.args.get('SMAtimesp')
-    longMA = request.args.get('SMAtimelp')
+    ticker = request.args.get('tickEMA')
+    shortMA = request.args.get('EMAtimesp')
+    longMA = request.args.get('EMAtimelp')
 
     # use yfinance API to load information for the stock
     reqTick = get_stock_data(ticker, "1y","1d")
 
-    # add short and long MA data to the dataframe
-    reqTick["EMA_" + shortMA] = reqTick['Close'].ewm(span = short_MA).mean()
-    reqTick["EMA_" + longMA] = reqTick['Close'].ewm(span = long_MA).mean()
+    # add short and long EMA data to the dataframe
+    reqTick["EMA_" + shortMA] = reqTick['Close'].ewm(span = int(shortMA)).mean()
+    reqTick["EMA_" + longMA] = reqTick['Close'].ewm(span = int(longMA)).mean()
 
     # convert dataframe reqTick to JSON and return response
     json_response = reqTick.to_json(orient="records", indent=2)

@@ -295,7 +295,7 @@ scanSMA.addEventListener("click", function(){
 
   // request for SMA data
   const xhr1 = new XMLHttpRequest();
-  xhr1.open("GET", `http://localhost:5000/SMA?tickSMA=${tickSMA}&SMAtimesp=${SMAtimesp}&SMAtimelp=${SMAtimelp}`);
+  xhr1.open("GET", `http://localhost:5000/SMA?tickSMA=${tickSMA}&SMAtimesp=${timeSMAsp}&SMAtimelp=${timeSMAlp}`);
   //xhr1.send();
 
   xhr1.onload = function() {
@@ -329,6 +329,18 @@ scanEMA.addEventListener("click", function(){
        else {
        console.log("We could not find your stock, make sure your search is case-sensitive");
  }
+
+ // request for EMA data
+ const xhr2 = new XMLHttpRequest();
+ xhr2.open("GET", `http://localhost:5000/EMA?tickEMA=${tickEMA}&EMAtimesp=${timeEMAsp}&EMAtimelp=${timeEMAlp}`);
+ //xhr1.send();
+
+ xhr2.onload = function() {
+   const body = JSON.parse(xhr2.responseText); // parse response
+
+   // may need to implement the simple movie average function here
+ }
+
  })
 //end of JS for stockpicker drop-down menu
 
