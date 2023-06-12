@@ -1,9 +1,9 @@
 // Maybe use this onload function to load all tickers in S&P and send to frontend, minimalizes API calls
 
 // window.onload = function() { // when website loads run this function (this is called an anonymous function)
-//   const date = new Date(); // use built in JS func to getcurrent date
+//  let date = new Date(); // use built in JS func to getcurrent date
 //   // parse date into a nice string
-//   const dateString = (date.getMonth() + 1) + '/' + date.getDate() + '/' + date.getFullYear();
+//   let dateString = (date.getMonth() + 1) + '/' + date.getDate() + '/' + date.getFullYear();
 //   document.getElementById('date').innerHTML = dateString; // set the .date HTML text to our dateString
 //   if ("geolocation" in navigator) { // if browser supports location
 //   navigator.geolocation.getCurrentPosition(success); // call 'success' function
@@ -93,7 +93,7 @@ for (var i = 0; i < scan.length; i++) {
   });
 }
  // Get the text content container
- const textContent = document.getElementById('text-content');
+ let textContent = document.getElementById('text-content');
  
  function clearStockLines() {
   while (textContent.firstChild) {
@@ -116,12 +116,12 @@ function hidesponch() {
 var scanRSIOB = document.getElementById("stvb1");//create var for RSI overbought
 
 scanRSIOB.addEventListener("click", function() {//Create event listner that prints out the number of stocks searched for according to input value
-  // const xhr1 = new XMLHttpRequest();
+  // let xhr1 = new XMLHttpRequest();
   // xhr1.open("GET", `http://localhost:5000/RSI`);
   // xhr1.send();
 
   // xhr1.onload = function() {
-  //   const body = JSON.parse(xhr1.responseText);
+  //   let body = JSON.parse(xhr1.responseText);
   // }
 
   
@@ -133,14 +133,15 @@ scanRSIOB.addEventListener("click", function() {//Create event listner that prin
 
 // Sort the JSON data by RSIOB in descending order
 jsonData.sort(function(a, b) {
-  return b.RSIOB - a.RSIOB;
+  return b.RSI - a.RSI;
 });
 
 // Display the top RSIOBnum tickers and their corresponding values
 for (let i = 0; i < RSIOBnum && i < jsonData.length; i++) {
-  const stockLine = document.createElement('p');
-  stockLine.textContent = `Ticker: ${jsonData[i].Ticker} | RSI Overbought: ${jsonData[i].RSIOB} | Price: ${jsonData[i].PRICE} `;
-  const stockbox = document.createElement('input');
+  if (jsonData[i].RSI < 70){continue};
+  let stockLine = document.createElement('p');
+  stockLine.textContent = `Ticker: ${jsonData[i].Ticker} | RSI: ${jsonData[i].RSI} | Price: $${jsonData[i].PRICE} `;
+  let stockbox = document.createElement('input');
   stockbox.type = "value";
   stockbox.id = `stocknum` + i;
   stockbox.placeholder = "How many stocks?";
@@ -149,12 +150,12 @@ for (let i = 0; i < RSIOBnum && i < jsonData.length; i++) {
   button.textContent = 'Add to portfolio';
   button.addEventListener('click', function(addData) {
     //code here  
-      const stocksbought = document.getElementById(`stocknum`+i).value; 
-      const titleInput = jsonData[i].Ticker;
-      const moneyInput = jsonData[i].PRICE;
+      let stocksbought = document.getElementById(`stocknum`+i).value; 
+      let titleInput = jsonData[i].Ticker;
+      let moneyInput = jsonData[i].PRICE;
     
-      const title = jsonData[i].Ticker;
-      const money = ((jsonData[i].PRICE) *(stocksbought));
+      let title = jsonData[i].Ticker;
+      let money = ((jsonData[i].PRICE) *(stocksbought));
     
       if (title !== "" && !isNaN(money) && money > 0) {
         dataPoints.push({ title, money });
@@ -183,14 +184,15 @@ scanRSIUB.addEventListener("click", function() {//Create event listner that prin
 
 // Sort the JSON data by RSIUB in descending order
 jsonData.sort(function(a, b) {
-  return b.RISUB - a.RSIUB;
+  return a.RSI - b.RSI;
 });
 
 // Display the top RSIOBnum tickers and their corresponding values
 for (let i = 0; i < RSIUBnum && i < jsonData.length; i++) {
-  const stockLine = document.createElement('p');
-  stockLine.textContent = `Ticker: ${jsonData[i].Ticker} | RSI Underbought: ${jsonData[i].RISUB} | Price: ${jsonData[i].PRICE} `;
-  const stockbox = document.createElement('input');
+  if(jsonData[i].RSI > 30){continue};
+  let stockLine = document.createElement('p');
+  stockLine.textContent = `Ticker: ${jsonData[i].Ticker} | RSI: ${jsonData[i].RSI} | Price: $${jsonData[i].PRICE} `;
+  let stockbox = document.createElement('input');
   stockbox.type = "value";
   stockbox.id = `stocknum` + i;
   stockbox.placeholder = "How many stocks?";
@@ -199,12 +201,12 @@ for (let i = 0; i < RSIUBnum && i < jsonData.length; i++) {
   button.textContent = 'Add to portfolio';
   button.addEventListener('click', function(addData) {
     //code here  
-      const stocksbought = document.getElementById(`stocknum`+i).value; 
-      const titleInput = jsonData[i].Ticker;
-      const moneyInput = jsonData[i].PRICE;
+      let stocksbought = document.getElementById(`stocknum`+i).value; 
+      let titleInput = jsonData[i].Ticker;
+      let moneyInput = jsonData[i].PRICE;
     
-      const title = jsonData[i].Ticker;
-      const money = ((jsonData[i].PRICE) *(stocksbought));
+      let title = jsonData[i].Ticker;
+      let money = ((jsonData[i].PRICE) *(stocksbought));
     
       if (title !== "" && !isNaN(money) && money > 0) {
         dataPoints.push({ title, money });
@@ -234,14 +236,14 @@ scanMACDUT.addEventListener("click", function() {//Create event listner that pri
 
 // Sort the JSON data by MACDUT in descending order
 jsonData.sort(function(a, b) {
-  return b.MACDUT - a.MACDUT;
+  return b.MACD - a.MACD;
 });
 
 // Display the top MACDUTnum tickers and their corresponding values
 for (let i = 0; i < MACDUTnum && i < jsonData.length; i++) {
-  const stockLine = document.createElement('p');
-  stockLine.textContent = `Ticker: ${jsonData[i].Ticker} | MACD Uptrending: ${jsonData[i].MACDUT} | Price: ${jsonData[i].PRICE} `;
-  const stockbox = document.createElement('input');
+  let stockLine = document.createElement('p');
+  stockLine.textContent = `Ticker: ${jsonData[i].Ticker} | MACD Uptrending: ${jsonData[i].MACD} | Price: ${jsonData[i].PRICE} `;
+  let stockbox = document.createElement('input');
   stockbox.type = "value";
   stockbox.id = `stocknum` + i;
   stockbox.placeholder = "How many stocks?";
@@ -250,12 +252,12 @@ for (let i = 0; i < MACDUTnum && i < jsonData.length; i++) {
   button.textContent = 'Add to portfolio';
   button.addEventListener('click', function(addData) {
     //code here  
-      const stocksbought = document.getElementById(`stocknum`+i).value; 
-      const titleInput = jsonData[i].Ticker;
-      const moneyInput = jsonData[i].PRICE;
+      let stocksbought = document.getElementById(`stocknum`+i).value; 
+      let titleInput = jsonData[i].Ticker;
+      let moneyInput = jsonData[i].PRICE;
     
-      const title = jsonData[i].Ticker;
-      const money = ((jsonData[i].PRICE) *(stocksbought));
+      let title = jsonData[i].Ticker;
+      let money = ((jsonData[i].PRICE) *(stocksbought));
     
       if (title !== "" && !isNaN(money) && money > 0) {
         dataPoints.push({ title, money });
@@ -290,9 +292,9 @@ jsonData.sort(function(a, b) {
 
 // Display the top MACDDTnum tickers and their corresponding values
 for (let i = 0; i < MACDDTnum && i < jsonData.length; i++) {
-  const stockLine = document.createElement('p');
+  let stockLine = document.createElement('p');
   stockLine.textContent = `Ticker: ${jsonData[i].Ticker} | MACD Downtrend: ${jsonData[i].MACDDT} | Price: ${jsonData[i].PRICE} `;
-  const stockbox = document.createElement('input');
+  let stockbox = document.createElement('input');
   stockbox.type = "value";
   stockbox.id = `stocknum` + i;
   stockbox.placeholder = "How many stocks?";
@@ -301,12 +303,12 @@ for (let i = 0; i < MACDDTnum && i < jsonData.length; i++) {
   button.textContent = 'Add to portfolio';
   button.addEventListener('click', function(addData) {
     //code here  
-      const stocksbought = document.getElementById(`stocknum`+i).value; 
-      const titleInput = jsonData[i].Ticker;
-      const moneyInput = jsonData[i].PRICE;
+      let stocksbought = document.getElementById(`stocknum`+i).value; 
+      let titleInput = jsonData[i].Ticker;
+      let moneyInput = jsonData[i].PRICE;
     
-      const title = jsonData[i].Ticker;
-      const money = ((jsonData[i].PRICE) *(stocksbought));
+      let title = jsonData[i].Ticker;
+      let money = ((jsonData[i].PRICE) *(stocksbought));
     
       if (title !== "" && !isNaN(money) && money > 0) {
         dataPoints.push({ title, money });
@@ -354,12 +356,12 @@ scanSMA.addEventListener("click", function(){
   
 
   // request for SMA data
-  const xhr1 = new XMLHttpRequest();
+  let xhr1 = new XMLHttpRequest();
   xhr1.open("GET", `http://localhost:5000/SMA?tickSMA=${tickSMA}&SMAtimesp=${SMAtimesp}&SMAtimelp=${SMAtimelp}`);
   //xhr1.send();
 
   xhr1.onload = function() {
-    const body = JSON.parse(xhr1.responseText); // parse response
+    let body = JSON.parse(xhr1.responseText); // parse response
 
     // may need to implement the simple movie average function here
   }
@@ -397,11 +399,11 @@ let chart;
 let dataPoints = [];
 
 function addData() {
-  const titleInput = document.getElementById("title");
-  const moneyInput = document.getElementById("money");
+  let titleInput = document.getElementById("title");
+  let moneyInput = document.getElementById("money");
 
-  const title = titleInput.value;
-  const money = parseFloat(moneyInput.value);
+  let title = titleInput.value;
+  let money = parseFloat(moneyInput.value);
 
   if (title !== "" && !isNaN(money) && money > 0) {
     dataPoints.push({ title, money });
@@ -423,8 +425,8 @@ function renderChart() {
     chart.destroy();
   }
 
-  const series = dataPoints.map((point) => point.money);
-  const labels = dataPoints.map((point) => point.title);
+  let series = dataPoints.map((point) => point.money);
+  let labels = dataPoints.map((point) => point.title);
 
   chart = new ApexCharts(document.querySelector("#chartContainer"), {
     series: series,
@@ -438,14 +440,14 @@ function renderChart() {
 }
 
 function renderDataList() {
-  const dataList = document.getElementById("dataList");
+  let dataList = document.getElementById("dataList");
   dataList.innerHTML = "";
 
   dataPoints.forEach((point, index) => {
-    const listItem = document.createElement("li");
+    let listItem = document.createElement("li");
     listItem.textContent = `${point.title}: $${point.money.toFixed(2)}`;
 
-    const removeButton = document.createElement("button");
+    let removeButton = document.createElement("button");
     removeButton.textContent = "Remove";
     removeButton.addEventListener("click", () => removeData(index));
 
@@ -455,405 +457,487 @@ function renderDataList() {
 }
 
 // JSON DATA
-const jsonData = [
+let jsonData = [
   {
    "Ticker": 1111,
-   "RSIOB": 1,
-   "RISUB": 1,
-   "MACDUT": 1,
-   "MACDDT": 1,
-   "PRICE": 81
+   "RSI": 84,
+   "MACD": 20,
+   "PRICE": 52
   },
   {
    "Ticker": 1112,
-   "RSIOB": 2,
-   "RISUB": 2,
-   "MACDUT": 2,
-   "MACDDT": 2,
-   "PRICE": 35
+   "RSI": 2,
+   "MACD": 53,
+   "PRICE": 63
   },
   {
    "Ticker": 1113,
-   "RSIOB": 3,
-   "RISUB": 3,
-   "MACDUT": 3,
-   "MACDDT": 3,
-   "PRICE": 84
-  },
-  {
-   "Ticker": 1114,
-   "RSIOB": 4,
-   "RISUB": 4,
-   "MACDUT": 4,
-   "MACDDT": 4,
-   "PRICE": 81
-  },
-  {
-   "Ticker": 1115,
-   "RSIOB": 5,
-   "RISUB": 5,
-   "MACDUT": 5,
-   "MACDDT": 5,
-   "PRICE": 22
-  },
-  {
-   "Ticker": 1116,
-   "RSIOB": 6,
-   "RISUB": 6,
-   "MACDUT": 6,
-   "MACDDT": 6,
-   "PRICE": 68
-  },
-  {
-   "Ticker": 1117,
-   "RSIOB": 7,
-   "RISUB": 7,
-   "MACDUT": 7,
-   "MACDDT": 7,
-   "PRICE": 10
-  },
-  {
-   "Ticker": 1118,
-   "RSIOB": 8,
-   "RISUB": 8,
-   "MACDUT": 8,
-   "MACDDT": 8,
-   "PRICE": 64
-  },
-  {
-   "Ticker": 1119,
-   "RSIOB": 9,
-   "RISUB": 9,
-   "MACDUT": 9,
-   "MACDDT": 9,
-   "PRICE": 95
-  },
-  {
-   "Ticker": 1120,
-   "RSIOB": 10,
-   "RISUB": 10,
-   "MACDUT": 10,
-   "MACDDT": 10,
-   "PRICE": 66
-  },
-  {
-   "Ticker": 1121,
-   "RSIOB": 11,
-   "RISUB": 11,
-   "MACDUT": 11,
-   "MACDDT": 11,
-   "PRICE": 3
-  },
-  {
-   "Ticker": 1122,
-   "RSIOB": 12,
-   "RISUB": 12,
-   "MACDUT": 12,
-   "MACDDT": 12,
-   "PRICE": 11
-  },
-  {
-   "Ticker": 1123,
-   "RSIOB": 13,
-   "RISUB": 13,
-   "MACDUT": 13,
-   "MACDDT": 13,
-   "PRICE": 71
-  },
-  {
-   "Ticker": 1124,
-   "RSIOB": 14,
-   "RISUB": 14,
-   "MACDUT": 14,
-   "MACDDT": 14,
-   "PRICE": 70
-  },
-  {
-   "Ticker": 1125,
-   "RSIOB": 15,
-   "RISUB": 15,
-   "MACDUT": 15,
-   "MACDDT": 15,
-   "PRICE": 94
-  },
-  {
-   "Ticker": 1126,
-   "RSIOB": 16,
-   "RISUB": 16,
-   "MACDUT": 16,
-   "MACDDT": 16,
-   "PRICE": 19
-  },
-  {
-   "Ticker": 1127,
-   "RSIOB": 17,
-   "RISUB": 17,
-   "MACDUT": 17,
-   "MACDDT": 17,
-   "PRICE": 29
-  },
-  {
-   "Ticker": 1128,
-   "RSIOB": 18,
-   "RISUB": 18,
-   "MACDUT": 18,
-   "MACDDT": 18,
-   "PRICE": 28
-  },
-  {
-   "Ticker": 1129,
-   "RSIOB": 19,
-   "RISUB": 19,
-   "MACDUT": 19,
-   "MACDDT": 19,
-   "PRICE": 54
-  },
-  {
-   "Ticker": 1130,
-   "RSIOB": 20,
-   "RISUB": 20,
-   "MACDUT": 20,
-   "MACDDT": 20,
-   "PRICE": 37
-  },
-  {
-   "Ticker": 1131,
-   "RSIOB": 21,
-   "RISUB": 21,
-   "MACDUT": 21,
-   "MACDDT": 21,
-   "PRICE": 90
-  },
-  {
-   "Ticker": 1132,
-   "RSIOB": 22,
-   "RISUB": 22,
-   "MACDUT": 22,
-   "MACDDT": 22,
-   "PRICE": 5
-  },
-  {
-   "Ticker": 1133,
-   "RSIOB": 23,
-   "RISUB": 23,
-   "MACDUT": 23,
-   "MACDDT": 23,
-   "PRICE": 69
-  },
-  {
-   "Ticker": 1134,
-   "RSIOB": 24,
-   "RISUB": 24,
-   "MACDUT": 24,
-   "MACDDT": 24,
-   "PRICE": 89
-  },
-  {
-   "Ticker": 1135,
-   "RSIOB": 25,
-   "RISUB": 25,
-   "MACDUT": 25,
-   "MACDDT": 25,
-   "PRICE": 84
-  },
-  {
-   "Ticker": 1136,
-   "RSIOB": 26,
-   "RISUB": 26,
-   "MACDUT": 26,
-   "MACDDT": 26,
-   "PRICE": 44
-  },
-  {
-   "Ticker": 1137,
-   "RSIOB": 27,
-   "RISUB": 27,
-   "MACDUT": 27,
-   "MACDDT": 27,
-   "PRICE": 40
-  },
-  {
-   "Ticker": 1138,
-   "RSIOB": 28,
-   "RISUB": 28,
-   "MACDUT": 28,
-   "MACDDT": 28,
-   "PRICE": 31
-  },
-  {
-   "Ticker": 1139,
-   "RSIOB": 29,
-   "RISUB": 29,
-   "MACDUT": 29,
-   "MACDDT": 29,
-   "PRICE": 73
-  },
-  {
-   "Ticker": 1140,
-   "RSIOB": 30,
-   "RISUB": 30,
-   "MACDUT": 30,
-   "MACDDT": 30,
-   "PRICE": 32
-  },
-  {
-   "Ticker": 1141,
-   "RSIOB": 31,
-   "RISUB": 31,
-   "MACDUT": 31,
-   "MACDDT": 31,
-   "PRICE": 68
-  },
-  {
-   "Ticker": 1142,
-   "RSIOB": 32,
-   "RISUB": 32,
-   "MACDUT": 32,
-   "MACDDT": 32,
+   "RSI": 79,
+   "MACD": 28,
    "PRICE": 8
   },
   {
-   "Ticker": 1143,
-   "RSIOB": 33,
-   "RISUB": 33,
-   "MACDUT": 33,
-   "MACDDT": 33,
-   "PRICE": 22
-  },
-  {
-   "Ticker": 1144,
-   "RSIOB": 34,
-   "RISUB": 34,
-   "MACDUT": 34,
-   "MACDDT": 34,
-   "PRICE": 7
-  },
-  {
-   "Ticker": 1145,
-   "RSIOB": 35,
-   "RISUB": 35,
-   "MACDUT": 35,
-   "MACDDT": 35,
-   "PRICE": 16
-  },
-  {
-   "Ticker": 1146,
-   "RSIOB": 36,
-   "RISUB": 36,
-   "MACDUT": 36,
-   "MACDDT": 36,
-   "PRICE": 21
-  },
-  {
-   "Ticker": 1147,
-   "RSIOB": 37,
-   "RISUB": 37,
-   "MACDUT": 37,
-   "MACDDT": 37,
-   "PRICE": 5
-  },
-  {
-   "Ticker": 1148,
-   "RSIOB": 38,
-   "RISUB": 38,
-   "MACDUT": 38,
-   "MACDDT": 38,
-   "PRICE": 62
-  },
-  {
-   "Ticker": 1149,
-   "RSIOB": 39,
-   "RISUB": 39,
-   "MACDUT": 39,
-   "MACDDT": 39,
-   "PRICE": 92
-  },
-  {
-   "Ticker": 1150,
-   "RSIOB": 40,
-   "RISUB": 40,
-   "MACDUT": 40,
-   "MACDDT": 40,
-   "PRICE": 17
-  },
-  {
-   "Ticker": 1151,
-   "RSIOB": 41,
-   "RISUB": 41,
-   "MACDUT": 41,
-   "MACDDT": 41,
-   "PRICE": 53
-  },
-  {
-   "Ticker": 1152,
-   "RSIOB": 42,
-   "RISUB": 42,
-   "MACDUT": 42,
-   "MACDDT": 42,
-   "PRICE": 60
-  },
-  {
-   "Ticker": 1153,
-   "RSIOB": 43,
-   "RISUB": 43,
-   "MACDUT": 43,
-   "MACDDT": 43,
+   "Ticker": 1114,
+   "RSI": 26,
+   "MACD": 90,
    "PRICE": 64
   },
   {
-   "Ticker": 1154,
-   "RSIOB": 44,
-   "RISUB": 44,
-   "MACDUT": 44,
-   "MACDDT": 44,
-   "PRICE": 94
+   "Ticker": 1115,
+   "RSI": 42,
+   "MACD": 78,
+   "PRICE": 70
   },
   {
-   "Ticker": 1155,
-   "RSIOB": 45,
-   "RISUB": 45,
-   "MACDUT": 45,
-   "MACDDT": 45,
-   "PRICE": 25
+   "Ticker": 1116,
+   "RSI": 12,
+   "MACD": 32,
+   "PRICE": 76
   },
   {
-   "Ticker": 1156,
-   "RSIOB": 46,
-   "RISUB": 46,
-   "MACDUT": 46,
-   "MACDDT": 46,
+   "Ticker": 1117,
+   "RSI": 3,
+   "MACD": 34,
+   "PRICE": 41
+  },
+  {
+   "Ticker": 1118,
+   "RSI": 58,
+   "MACD": 37,
+   "PRICE": 31
+  },
+  {
+   "Ticker": 1119,
+   "RSI": 86,
+   "MACD": 48,
+   "PRICE": 11
+  },
+  {
+   "Ticker": 1120,
+   "RSI": 55,
+   "MACD": 20,
+   "PRICE": 56
+  },
+  {
+   "Ticker": 1121,
+   "RSI": 86,
+   "MACD": 12,
+   "PRICE": 82
+  },
+  {
+   "Ticker": 1122,
+   "RSI": 78,
+   "MACD": 25,
+   "PRICE": 72
+  },
+  {
+   "Ticker": 1123,
+   "RSI": 66,
+   "MACD": 30,
+   "PRICE": 88
+  },
+  {
+   "Ticker": 1124,
+   "RSI": 38,
+   "MACD": 94,
+   "PRICE": 62
+  },
+  {
+   "Ticker": 1125,
+   "RSI": 21,
+   "MACD": 18,
+   "PRICE": 62
+  },
+  {
+   "Ticker": 1126,
+   "RSI": 37,
+   "MACD": 93,
+   "PRICE": 22
+  },
+  {
+   "Ticker": 1127,
+   "RSI": 45,
+   "MACD": 39,
+   "PRICE": 23
+  },
+  {
+   "Ticker": 1128,
+   "RSI": 54,
+   "MACD": 35,
    "PRICE": 21
   },
   {
+   "Ticker": 1129,
+   "RSI": 64,
+   "MACD": 31,
+   "PRICE": 62
+  },
+  {
+   "Ticker": 1130,
+   "RSI": 32,
+   "MACD": 64,
+   "PRICE": 95
+  },
+  {
+   "Ticker": 1131,
+   "RSI": 14,
+   "MACD": 19,
+   "PRICE": 93
+  },
+  {
+   "Ticker": 1132,
+   "RSI": 17,
+   "MACD": 5,
+   "PRICE": 82
+  },
+  {
+   "Ticker": 1133,
+   "RSI": 66,
+   "MACD": 72,
+   "PRICE": 58
+  },
+  {
+   "Ticker": 1134,
+   "RSI": 77,
+   "MACD": 9,
+   "PRICE": 6
+  },
+  {
+   "Ticker": 1135,
+   "RSI": 28,
+   "MACD": 35,
+   "PRICE": 75
+  },
+  {
+   "Ticker": 1136,
+   "RSI": 75,
+   "MACD": 8,
+   "PRICE": 22
+  },
+  {
+   "Ticker": 1137,
+   "RSI": 7,
+   "MACD": 3,
+   "PRICE": 84
+  },
+  {
+   "Ticker": 1138,
+   "RSI": 88,
+   "MACD": 98,
+   "PRICE": 12
+  },
+  {
+   "Ticker": 1139,
+   "RSI": 67,
+   "MACD": 97,
+   "PRICE": 66
+  },
+  {
+   "Ticker": 1140,
+   "RSI": 96,
+   "MACD": 32,
+   "PRICE": 59
+  },
+  {
+   "Ticker": 1141,
+   "RSI": 28,
+   "MACD": 10,
+   "PRICE": 50
+  },
+  {
+   "Ticker": 1142,
+   "RSI": 1,
+   "MACD": 40,
+   "PRICE": 78
+  },
+  {
+   "Ticker": 1143,
+   "RSI": 22,
+   "MACD": 55,
+   "PRICE": 80
+  },
+  {
+   "Ticker": 1144,
+   "RSI": 69,
+   "MACD": 70,
+   "PRICE": 79
+  },
+  {
+   "Ticker": 1145,
+   "RSI": 14,
+   "MACD": 83,
+   "PRICE": 28
+  },
+  {
+   "Ticker": 1146,
+   "RSI": 60,
+   "MACD": 92,
+   "PRICE": 71
+  },
+  {
+   "Ticker": 1147,
+   "RSI": 10,
+   "MACD": 59,
+   "PRICE": 76
+  },
+  {
+   "Ticker": 1148,
+   "RSI": 65,
+   "MACD": 2,
+   "PRICE": 35
+  },
+  {
+   "Ticker": 1149,
+   "RSI": 75,
+   "MACD": 81,
+   "PRICE": 58
+  },
+  {
+   "Ticker": 1150,
+   "RSI": 48,
+   "MACD": 43,
+   "PRICE": 72
+  },
+  {
+   "Ticker": 1151,
+   "RSI": 50,
+   "MACD": 82,
+   "PRICE": 80
+  },
+  {
+   "Ticker": 1152,
+   "RSI": 89,
+   "MACD": 39,
+   "PRICE": 39
+  },
+  {
+   "Ticker": 1153,
+   "RSI": 8,
+   "MACD": 30,
+   "PRICE": 41
+  },
+  {
+   "Ticker": 1154,
+   "RSI": 72,
+   "MACD": 100,
+   "PRICE": 41
+  },
+  {
+   "Ticker": 1155,
+   "RSI": 52,
+   "MACD": 5,
+   "PRICE": 84
+  },
+  {
+   "Ticker": 1156,
+   "RSI": 76,
+   "MACD": 64,
+   "PRICE": 58
+  },
+  {
    "Ticker": 1157,
-   "RSIOB": 47,
-   "RISUB": 47,
-   "MACDUT": 47,
-   "MACDDT": 47,
-   "PRICE": 5
+   "RSI": 60,
+   "MACD": 77,
+   "PRICE": 64
   },
   {
    "Ticker": 1158,
-   "RSIOB": 48,
-   "RISUB": 48,
-   "MACDUT": 48,
-   "MACDDT": 48,
-   "PRICE": 29
+   "RSI": 83,
+   "MACD": 89,
+   "PRICE": 75
   },
   {
    "Ticker": 1159,
-   "RSIOB": 49,
-   "RISUB": 49,
-   "MACDUT": 49,
-   "MACDDT": 49,
-   "PRICE": 17
+   "RSI": 75,
+   "MACD": 99,
+   "PRICE": 90
   },
   {
    "Ticker": 1160,
-   "RSIOB": 50,
-   "RISUB": 50,
-   "MACDUT": 50,
-   "MACDDT": 50,
-   "PRICE": 24
+   "RSI": 39,
+   "MACD": 32,
+   "PRICE": 60
   }
  ]
+ let jsonData2 = [
+  {
+    "Date":1684108800000,
+    "Open":309.1000061035,
+    "High":309.8999938965,
+    "Low":307.5899963379,
+    "Close":309.4599914551,
+    "Adj Close":308.7849731445,
+    "Volume":16336500,
+    "date":1684108800000,
+    "SMA_20":300.0634979248,
+    "SMA_50":285.0903997803
+  },
+  {
+    "Date":1684195200000,
+    "Open":309.8299865723,
+    "High":313.7099914551,
+    "Low":309.8299865723,
+    "Close":311.7399902344,
+    "Adj Close":311.0599975586,
+    "Volume":26730300,
+    "date":1684195200000,
+    "SMA_20":301.2319976807,
+    "SMA_50":286.1877996826
+  },
+  {
+    "Date":1684281600000,
+    "Open":312.2900085449,
+    "High":314.4299926758,
+    "Low":310.7399902344,
+    "Close":314.0,
+    "Adj Close":314.0,
+    "Volume":24315000,
+    "date":1684281600000,
+    "SMA_20":302.5094970703,
+    "SMA_50":287.3847998047
+  },
+  {
+    "Date":1684368000000,
+    "Open":314.5299987793,
+    "High":319.0400085449,
+    "Low":313.7200012207,
+    "Close":318.5199890137,
+    "Adj Close":318.5199890137,
+    "Volume":27276000,
+    "date":1684368000000,
+    "SMA_20":304.1299972534,
+    "SMA_50":288.681199646
+  },
+  {
+    "Date":1684454400000,
+    "Open":316.7399902344,
+    "High":318.75,
+    "Low":316.3699951172,
+    "Close":318.3399963379,
+    "Adj Close":318.3399963379,
+    "Volume":27529500,
+    "date":1684454400000,
+    "SMA_20":305.758996582,
+    "SMA_50":290.0015994263
+  },
+  {
+    "Date":1684713600000,
+    "Open":318.6000061035,
+    "High":322.5899963379,
+    "Low":318.0100097656,
+    "Close":321.1799926758,
+    "Adj Close":321.1799926758,
+    "Volume":24115700,
+    "date":1684713600000,
+    "SMA_20":307.7294967651,
+    "SMA_50":291.453399353
+  },
+  {
+    "Date":1684800000000,
+    "Open":320.0299987793,
+    "High":322.7200012207,
+    "Low":315.25,
+    "Close":315.2600097656,
+    "Adj Close":315.2600097656,
+    "Volume":30797200,
+    "date":1684800000000,
+    "SMA_20":309.721496582,
+    "SMA_50":292.680199585
+  },
+  {
+    "Date":1684886400000,
+    "Open":314.7300109863,
+    "High":316.5,
+    "Low":312.6099853516,
+    "Close":313.8500061035,
+    "Adj Close":313.8500061035,
+    "Volume":23384900,
+    "date":1684886400000,
+    "SMA_20":310.6454971313,
+    "SMA_50":293.7413995361
+  },
+  {
+    "Date":1684972800000,
+    "Open":323.2399902344,
+    "High":326.8999938965,
+    "Low":320.0,
+    "Close":325.9200134277,
+    "Adj Close":325.9200134277,
+    "Volume":43301700,
+    "date":1684972800000,
+    "SMA_20":311.6999984741,
+    "SMA_50":294.9509997559
+  },
+  {
+    "Date":1685059200000,
+    "Open":324.0199890137,
+    "High":333.3999938965,
+    "Low":323.8800048828,
+    "Close":332.8900146484,
+    "Adj Close":332.8900146484,
+    "Volume":36630600,
+    "date":1685059200000,
+    "SMA_20":312.9814987183,
+    "SMA_50":296.0847998047
+  },
+  {
+    "Date":1685404800000,
+    "Open":335.2300109863,
+    "High":335.7399902344,
+    "Low":330.5199890137,
+    "Close":331.2099914551,
+    "Adj Close":331.2099914551,
+    "Volume":29503100,
+    "date":1685404800000,
+    "SMA_20":314.2639984131,
+    "SMA_50":297.1203997803
+  },
+  {
+    "Date":1685491200000,
+    "Open":332.2900085449,
+    "High":335.9400024414,
+    "Low":327.3299865723,
+    "Close":328.3900146484,
+    "Adj Close":328.3900146484,
+    "Volume":45950600,
+    "date":1685491200000,
+    "SMA_20":315.4129989624,
+    "SMA_50":298.2435998535
+  },
+  {
+    "Date":1685577600000,
+    "Open":325.9299926758,
+    "High":333.5299987793,
+    "Low":324.7200012207,
+    "Close":332.5799865723,
+    "Adj Close":332.5799865723,
+    "Volume":26773900,
+    "date":1685577600000,
+    "SMA_20":316.8219985962,
+    "SMA_50":299.4195996094
+  },
+  {
+    "Date":1685664000000,
+    "Open":334.25,
+    "High":337.5,
+    "Low":332.549987793,
+    "Close":335.3999938965,
+    "Adj Close":335.3999938965,
+    "Volume":25864000,
+    "date":1685664000000,
+    "SMA_20":318.3214981079,
+    "SMA_50":300.6817993164
+  },
+  {
+    "Date":1685923200000,
+    "Open":335.2200012207,
+    "High":338.549987793,
+    "Low":334.6600952148,
+    "Close":335.9400024414,
+    "Adj Close":335.9400024414,
+    "Volume":21241193,
+    "date":1685923200000,
+    "SMA_20":319.5859985352,
+    "SMA_50":301.847399292
+  }
+]
