@@ -78,9 +78,30 @@ def RSI():
 
     return json_response
 
-# @app.route('/MACD')
-# def MACD():
-#     return 'Hello, MACD!'
+@app.route('/MACD')
+def MACD():
+    # use yfinance API to load information for the stock
+    reqTick = get_stock_data("MSFT", "1y","1d")
+
+    ## Calculate the Short Term Exponential Moving AverageShort
+    shortEMA = reqTick.Close.ewm(span=12, adjust=False).mean()
+
+    ## Calculate the Long Term Exponential Moving Average
+    longEMA = reqTick.Close.ewm(span=26, adjust=False).mean()
+
+    ## Calculate the Moving Average Convergence/Divergence (MACD)
+    MACD = shortEMA - longEMA
+    
+    ## Calculate the signal line
+    signal = MACD.ewm(span=9, adjust=False).mean()
+
+    # add short and long EMA data to the dataframe
+    reqTick["MACD"] = MACD
+    reqTick["Signal"] = signal
+
+    # convert dataframe reqTick to JSON and return response
+    json_response = reqTick.to_json(orient="records", indent=2)
+    return json_response
 
 @app.route('/SMA')
 def SMA():
