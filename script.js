@@ -223,6 +223,12 @@ for (let i = 0; i < MACDUTnum && i < jsonData.length; i++) {
 });
 
 var scanMACDDT = document.getElementById("stvb4");//create var for MACD strong downtrend
+var tickMACDscan = document.getElementById("tickMACDbutton")
+
+tickMACDscan.addEventListener("click", function(){
+  var MACDticker = document.getElementById("tickMACD").value;
+  console.log(`${MACDticker}`);
+})
 
 scanMACDDT.addEventListener("click", function() {//Create event listner that prints out the number of stocks searched for according to input value
   var MACDDTnum = document.getElementById("stv4").value;
@@ -360,6 +366,7 @@ scanEMA.addEventListener("click", function(){
  }
 
  })
+
 //end of JS for stockpicker drop-down menu
 
 //Javascript for pie chart add money/title and remove functionality
