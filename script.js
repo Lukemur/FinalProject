@@ -1,16 +1,21 @@
 // Maybe use this onload function to load all tickers in S&P and send to frontend, minimalizes API calls
 
-// window.onload = function() { // when website loads run this function (this is called an anonymous function)
-//  let date = new Date(); // use built in JS func to getcurrent date
-//   // parse date into a nice string
-//   let dateString = (date.getMonth() + 1) + '/' + date.getDate() + '/' + date.getFullYear();
-//   document.getElementById('date').innerHTML = dateString; // set the .date HTML text to our dateString
-//   if ("geolocation" in navigator) { // if browser supports location
-//   navigator.geolocation.getCurrentPosition(success); // call 'success' function
-// } else { // if location does not exist
-//   console.log("Geolocation is not available in your browser."); // print message to user
-// }
-// }
+window.onload = function() { // when website loads run this function (this is called an anonymous function)
+  const xhr = new XMLHttpRequest();
+
+  xhr.open("GET", `http://localhost:5000/ONLOAD`);
+  
+  xhr.onload = function() {
+    if (xhr.status === 200) {
+      console.log('Request was successful!');
+    } else {
+      // Request failed or returned an error
+      console.error('Error:', xhr.status, xhr.statusText);
+    }
+  };
+  xhr.send();
+};
+
 // Beginning of JS for stockpicker drop-down menu
 function showDropdown(category) {
   var dropdown = document.getElementById(category);
@@ -299,16 +304,18 @@ scanSMA.addEventListener("click", function(){
   
 
   // request for SMA data
-  //let xhr1 = new XMLHttpRequest();
-  xhr1.open("GET", `http://localhost:5000/SMA?tickSMA=${tickSMA}&SMAtimesp=${SMAtimesp}&SMAtimelp=${SMAtimelp}`);
+
+  // const xhr1 = new XMLHttpRequest();
+  // xhr1.open("GET", `http://localhost:5000/SMA?tickSMA=${tickSMA}&SMAtimesp=${SMAtimesp}&SMAtimelp=${SMAtimelp}`);
+  
   const xhr1 = new XMLHttpRequest();
   xhr1.open("GET", `http://localhost:5000/SMA?tickSMA=${tickSMA}&SMAtimesp=${timeSMAsp}&SMAtimelp=${timeSMAlp}`);
-  //xhr1.send();
+  xhr1.send();
 
   xhr1.onload = function() {
     let body = JSON.parse(xhr1.responseText); // parse response
 
-    // may need to implement the simple movie average function here
+    // here parse the body JSON response for stock data 
   }
 })
 stockLine.appendChild(stockbox);
@@ -343,7 +350,7 @@ scanEMA.addEventListener("click", function(){
  // request for EMA data
  const xhr2 = new XMLHttpRequest();
  xhr2.open("GET", `http://localhost:5000/EMA?tickEMA=${tickEMA}&EMAtimesp=${timeEMAsp}&EMAtimelp=${timeEMAlp}`);
- //xhr1.send();
+ xhr1.send();
 
  xhr2.onload = function() {
    const body = JSON.parse(xhr2.responseText); // parse response
