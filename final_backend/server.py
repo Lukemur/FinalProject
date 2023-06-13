@@ -19,7 +19,8 @@ def get_stock_data(stock, period, interval):
     ticker = stock
     yf.pdr_override()
     df = yf.download(tickers=stock, interval=interval,period=period)
-    # df.reset_index(inplace=True) 
+    df.reset_index(inplace=True) 
+    df['date'] = df['Date'].dt.date 
     
     return df
 
@@ -65,6 +66,8 @@ def winOnload():
     # initialize spDF and spTickers global vars
     global spDF
     spDF = get_stock_data(spTickers, '10y', '1d')
+
+    # print global stock dataframe
     print(spDF)
     
     return 'Initialization complete'
@@ -86,20 +89,20 @@ def RSI():
         localSPDF['RSI_' + i] = RSI_df[i]
 
     json_response = localSPDF.to_json(orient="records", indent=2)
-    print(localSPDF.tail().to_json(orient="records", indent=2))
+    print(localSPDF.tail(15).to_json(orient="records", indent=2))
 
     return json_response
 
 @app.route('/MACD')
 def MACD():
-    # use yfinance API to load information for the stock
-    reqTick = get_stock_data("MSFT", "1y","1d")
+    # use copy module to make a local copy of the global S&P 500 dataframe
+    localSPDF = copy.copy(spDF)
 
     ## Calculate the Short Term Exponential Moving AverageShort
-    shortEMA = reqTick.Close.ewm(span=12, adjust=False).mean()
+    shortEMA = localSPDF.Close.ewm(span=12, adjust=False).mean()
 
     ## Calculate the Long Term Exponential Moving Average
-    longEMA = reqTick.Close.ewm(span=26, adjust=False).mean()
+    longEMA = localSPDF.Close.ewm(span=26, adjust=False).mean()
 
     ## Calculate the Moving Average Convergence/Divergence (MACD)
     MACD = shortEMA - longEMA
@@ -107,12 +110,14 @@ def MACD():
     ## Calculate the signal line
     signal = MACD.ewm(span=9, adjust=False).mean()
 
-    # add short and long EMA data to the dataframe
-    reqTick["MACD"] = MACD
-    reqTick["Signal"] = signal
+    for i in spTickList:
+        # for each ticker add a new column to the data frame MACD and SIGNAL line data
+        localSPDF['MACD_' + i] = MACD[i]
+        localSPDF["SIGNAL_"] = signal[i]
 
     # convert dataframe reqTick to JSON and return response
-    json_response = reqTick.to_json(orient="records", indent=2)
+    json_response = localSPDF.to_json(orient="records", indent=2)
+    print(localSPDF.tail(15).to_json(orient="records", indent=2))
     return json_response
 
 @app.route('/SMA')
@@ -127,7 +132,7 @@ def SMA():
     # start = end - timedelta(weeks=time) # find start date by using timedelta() to subract period from current date to 
 
     # use yfinance API to load information for the stock
-    reqTick = get_stock_data(ticker, "1y","1d")
+    reqTick = get_stock_data(ticker, "10y", "1d")
 
     # add short and long MA data to the dataframe
     reqTick["SMA_" + shortMA] = reqTick['Close'].rolling(int(shortMA)).mean()
@@ -135,6 +140,7 @@ def SMA():
 
     # convert dataframe reqTick to JSON and return response
     json_response = reqTick.to_json(orient="records", indent=2)
+    print(reqTick.tail(15).to_json(orient="records", indent=2))
     return json_response
 
 @app.route('/EMA')
@@ -145,7 +151,7 @@ def EMA():
     longMA = request.args.get('EMAtimelp')
 
     # use yfinance API to load information for the stock
-    reqTick = get_stock_data(ticker, "1y","1d")
+    reqTick = get_stock_data(ticker, "10y","1d")
 
     # add short and long EMA data to the dataframe
     reqTick["EMA_" + shortMA] = reqTick['Close'].ewm(span = int(shortMA)).mean()
@@ -153,6 +159,7 @@ def EMA():
 
     # convert dataframe reqTick to JSON and return response
     json_response = reqTick.to_json(orient="records", indent=2)
+    print(reqTick.tail(15).to_json(orient="records", indent=2))
     return json_response
 
 
