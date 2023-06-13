@@ -11,66 +11,6 @@
 //   console.log("Geolocation is not available in your browser."); // print message to user
 // }
 // }
-
-anychart.onDocumentReady(function () {
-  anychart.data.loadCsvFile(
-    'https://gist.githubusercontent.com/shacheeswadia/cd509e0b0c03964ca86ae7d894137043/raw/5f336c644ad61728dbac93026f3268b86b8d0680/teslaDailyData.csv',
-    function (data) {
-      // create data table on loaded data
-      var dataTable = anychart.data.table();
-      dataTable.addData(data);
-
-      // map loaded data for the candlestick series
-      var mapping = dataTable.mapAs({
-        open: 1,
-        high: 2,
-        low: 3,
-        close: 4
-      });
-
-      // create stock chart
-      var chart = anychart.stock();
-
-      // create first plot on the chart
-      var plot = chart.plot(0);
-      
-      // set grid settings
-      plot.yGrid(true).xGrid(true).yMinorGrid(true).xMinorGrid(true);
-
-      var series = plot.candlestick(mapping)
-        .name('Tesla');
-      series.legendItem().iconType('rising-falling');
-
-      // create scroller series with mapped data
-      chart.scroller().candlestick(mapping);
-
-      // set chart selected date/time range
-      chart.selectRange('2020-11-27', '2021-11-26');
-
-      // create range picker
-      var rangePicker = anychart.ui.rangePicker();
-      
-      // init range picker
-      rangePicker.render(chart);
-
-      // create range selector
-      var rangeSelector = anychart.ui.rangeSelector();
-      
-      // init range selector
-      rangeSelector.render(chart);
-      
-      // sets the title of the chart
-      chart.title('Tesla Inc. Stock Chart');
-      
-      // set container id for the chart
-      chart.container('container');
-      
-      // initiate chart drawing
-      chart.draw();
-    }
-  );
-});
-
 // Beginning of JS for stockpicker drop-down menu
 function showDropdown(category) {
   var dropdown = document.getElementById(category);
@@ -332,6 +272,7 @@ for (let i = 0; i < MACDDTnum && i < jsonData.length; i++) {
 var scanSMA = document.getElementById("SMAb");
 
 scanSMA.addEventListener("click", function(){
+  let stockLine = document.createElement('p');
   var tickSMA = document.getElementById("tickSMA").value;
   var timeSMAsp = document.getElementById("SMAtimesp").value;
   var timeSMAlp = document.getElementById("SMAtimelp").value;
@@ -348,6 +289,8 @@ scanSMA.addEventListener("click", function(){
      break;}}
  if (foundMatch) {
      console.log("We found your stock!");
+     
+     stockLine.textContent = `Ticker: ${jsonData[i].Ticker} | MACD Downtrend: ${jsonData[i].MACDDT} | Price: ${jsonData[i].PRICE} `;
 }
      else {
      console.log("We could not find your stock, make sure your search is case-sensitive");
@@ -356,8 +299,10 @@ scanSMA.addEventListener("click", function(){
   
 
   // request for SMA data
-  let xhr1 = new XMLHttpRequest();
+  //let xhr1 = new XMLHttpRequest();
   xhr1.open("GET", `http://localhost:5000/SMA?tickSMA=${tickSMA}&SMAtimesp=${SMAtimesp}&SMAtimelp=${SMAtimelp}`);
+  const xhr1 = new XMLHttpRequest();
+  xhr1.open("GET", `http://localhost:5000/SMA?tickSMA=${tickSMA}&SMAtimesp=${timeSMAsp}&SMAtimelp=${timeSMAlp}`);
   //xhr1.send();
 
   xhr1.onload = function() {
@@ -366,6 +311,7 @@ scanSMA.addEventListener("click", function(){
     // may need to implement the simple movie average function here
   }
 })
+stockLine.appendChild(stockbox);
 
 var scanEMA = document.getElementById("EMAb");
 
@@ -387,11 +333,26 @@ scanEMA.addEventListener("click", function(){
        break;}}
    if (foundMatch) {
        console.log("We found your stock!");
+       let stockLine = document.createElement('p');
+       stockLine.textContent = `Ticker: ${jsonData[i].Ticker} | MACD Downtrend: ${jsonData[i].MACDDT} | Price: ${jsonData[i].PRICE} `;
  }
        else {
        console.log("We could not find your stock, make sure your search is case-sensitive");
  }
+
+ // request for EMA data
+ const xhr2 = new XMLHttpRequest();
+ xhr2.open("GET", `http://localhost:5000/EMA?tickEMA=${tickEMA}&EMAtimesp=${timeEMAsp}&EMAtimelp=${timeEMAlp}`);
+ //xhr1.send();
+
+ xhr2.onload = function() {
+   const body = JSON.parse(xhr2.responseText); // parse response
+
+   // may need to implement the simple movie average function here
+ }
+
  })
+ stockLine.appendChild(stockbox); 
 //end of JS for stockpicker drop-down menu
 
 //Javascript for pie chart add money/title and remove functionality
@@ -941,3 +902,4 @@ let jsonData = [
     "SMA_50":301.847399292
   }
 ]
+ 

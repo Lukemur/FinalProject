@@ -1,0 +1,6 @@
+.chart-container {
+    width: 600px; /* Set the width of the chart container */
+    height: 500px; /* Set the height of the chart container */
+    float: right;
+  }
+  

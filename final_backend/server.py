@@ -14,30 +14,35 @@ app = Flask(__name__)
 #     return tickers;
 
 # helps to retrieve dataframes of stock information
-def get_stock_data(stock, startdate, enddate, period, interval):
+def get_stock_data(stock, period, interval):
     ticker = stock
     yf.pdr_override()
-    df = yf.download(tickers=stock, start=startdate, end=enddate, interval=interval,period=period)
+    df = yf.download(tickers=stock, interval=interval,period=period)
     df.reset_index(inplace=True) 
-    df['date'] = df['Date'].dt.date
     
     return df
 
-# def RSI(data, window=14, adjust=False):
-#     delta = data['Close'].diff(1).dropna()
-#     loss = delta.copy()
-#     gains = delta.copy()
+def calcRSI(data):
+    delta = data['Close'].diff(1).dropna()
 
-#     gains[gains < 0] = 0
-#     loss[loss > 0] = 0
+    # Create two copies of the Closing price Series
+    delta_up = delta.copy()
+    delta_down = delta.copy()
 
-#     gain_ewm = gains.ewm(com=window - 1, adjust=adjust).mean()
-#     loss_ewm = abs(loss.ewm(com=window - 1, adjust=adjust).mean())
+    delta_up[ delta_up < 0 ] = 0
+    delta_down[ delta_down > 0 ] = 0
 
-#     RS = gain_ewm / loss_ewm
-#     RSI = 100 - 100 / (1 + RS)
+    # Verify that we did not make any mistakes
+    # change.equals(change_up+change_down)
 
-#     return RSI
+    # Calculate the rolling average of average up and average down
+    avg_up = delta_up.rolling(14).mean()
+    avg_down = delta_down.rolling(14).mean().abs()
+
+    # Calculate RSI
+    RSI = 100 * avg_up / (avg_up + avg_down)
+
+    return RSI
 
 # API Endpoints -----------------------------------------------------
 
@@ -45,9 +50,33 @@ def get_stock_data(stock, startdate, enddate, period, interval):
 def hello():
     return 'Hello, Flask!'
 
-# @app.route('/RSI')
-# def MACD():
-#     return 'Hello, RSI!'
+@app.route('/RSI')
+def RSI():
+    # get arguments from frontend
+    scan_num = request.args.get('RSIUBnum')
+
+    # string stores all tickers for stocks in S&P 500; separated by whitespaces
+    # spTickers = "MMM AOS ABT ABBV ABMD ACN ATVI ADM ADBE AAP AMD AES AFL A APD AKAM ALB ALK ARE ALGN ALLE LNT ALL GOOGL GOOG MO AMZN AMCR AEE AAL AEP AXP AIG AMT AWK AMP ABC AME AMGN APH ADI ANSS AON APA AAPL AMAT APTV ANET AJG AIZ T ATO ADSK ADP AZO AVB AVY BKR BAC BBWI BAX BDX BRK.B BBY BIO TECH BIIB BLK BK BA BKNG BWA BXP BSX BMY AVGO BR BRO CHRW CDNS CZR CPB COF CAH KMX CCL CARR CTLT CAT CBOE CBRE CDW CE CNC CNP CDAY CF CRL SCHW CHTR CVX CMG CB CHD CI CINF CTAS CSCO C CFG CLX CME CMS KO CTSH CL CMCSA CMA CAG COP ED STZ CPRT GLW CTVA COST CTRA CCI CSX CMI CVS DHI DHR DRI DVA DE DAL XRAY DVN DXCM FANG DLR DFS DISH DG DLTR D DPZ DOV DOW DTE DUK DD DXC EMN ETN EBAY ECL EIX EW EA LLY EMR ENPH ETR EOG EFX EQIX EQR ESS EL ETSY RE EVRG ES EXC EXPE EXPD EXR XOM FFIV FAST FRT FDX FIS FITB FRC FE FISV FLT FMC F FTNT FTV FOXA FOX BEN FCX GPS GRMN IT GNRC GD GE GIS GM GPC GILD GPN GL GS HAL HBI HAS HCA PEAK HSIC HES HPE HLT HOLX HD HON HRL HST HWM HPQ HUM HBAN HII IBM IEX IDXX ITW ILMN INCY IR INTC ICE IFF IP IPG INTU ISRG IVZ IPGP IQV IRM JBHT JKHY J SJM JNJ JCI JPM JNPR KSU K KEY KEYS KMB KIM KMI KLAC KHC KR LHX LH LRCX LW LVS LEG LDOS LEN LNC LIN LYV LKQ LMT L LOW LUMN LYB MTB MRO MPC MKTX MAR MMC MLM MAS MA MTCH MKC MCD MCK MDT MRK MET MTD MGM MCHP MU MSFT MAA MRNA MHK TAP MDLZ MPWR MNST MCO MS MSI MSCI NDAQ NTAP NFLX NWL NEM NWSA NWS NEE NKE NI NSC NTRS NOC NLOK NCLH NRG NUE NVDA NVR NXPI ORLY OXY ODFL OMC OKE ORCL OGN OTIS PCAR PKG PH PAYX PAYC PYPL PENN PNR PEP PKI PFE PM PSX PNW PXD PNC POOL PPG PPL PFG PG PGR PLD PRU PTC PEG PSA PHM PVH QRVO QCOM PWR DGX RL RJF RTX O REG REGN RF RSG RMD RHI ROK ROL ROP ROST RCL SPGI CRM SBAC SLB STX SEE SRE NOW SHW SPG SWKS SNA SO LUV SWK SBUX STT STE SYK SYF SNPS SYY TMUS TROW TTWO TPR TGT TEL TDY TFX TER TSLA TXN TXT COO HIG HSY MOS TRV DIS TMO TJX TSCO TT TDG TRMB TFC TYL TSN USB UDR ULTA UAA UA UNP UAL UPS URI UNH UHS VLO VTR VRSN VRSK VZ VRTX VFC VTRS V VNO VMC WRB GWW WAB WBA WMT WM WAT WEC WFC WELL WST WDC WU WRK WY WHR WMB WYNN XEL XLNX XYL YUM ZBRA ZBH ZION ZTS"
+    # use spTickers string to create a list of all S&P 500 stock tickers
+    # spTickList = spTickers.split(' ')
+
+    spTickers = "SPY AAPL"
+    spTickList = ["SPY", "AAPL"]
+
+    # use yfinance API to load information for the stock
+    reqTick = get_stock_data(spTickers, "1y","1d")
+
+    # Call RSI Helper Function to create dataframe for RSI values
+    RSI_df = calcRSI(reqTick)
+    
+    for i in spTickList:
+        # for each ticker add a new column to the data frame RSI_tickName containing the ticker's RSI values
+        reqTick['RSI_' + i] = RSI_df[i]
+
+    json_response = reqTick.to_json(orient="records", indent=2)
+    # print(reqTick.tail().to_json(orient="records", indent=2))
+
+    return json_response
 
 # @app.route('/MACD')
 # def MACD():
@@ -57,40 +86,42 @@ def hello():
 def SMA():
     # get arguments from frontend
     ticker = request.args.get('tickSMA')
-    time = request.args.get('SMAtime')
-    time = int(time) # convert time to integer
-
+    shortMA = request.args.get('SMAtimesp')
+    longMA = request.args.get('SMAtimelp')
 
     # initialize variables for API call
-    end = datetime.now() # get current date today
-    start = end - timedelta(weeks=time) # find start date by using timedelta() to subract period from current date to 
+    # end = datetime.now() # get current date today
+    # start = end - timedelta(weeks=time) # find start date by using timedelta() to subract period from current date to 
 
     # use yfinance API to load information for the stock
-    reqTick = get_stock_data(ticker,start,end,"60d","1d")
-    reqTick.head()
+    reqTick = get_stock_data(ticker, "1y","1d")
 
-    # define list for short (20 day) and long (50 day) SMAs
-    SMAs=[20, 50]
+    # add short and long MA data to the dataframe
+    reqTick["SMA_" + shortMA] = reqTick['Close'].rolling(int(shortMA)).mean()
+    reqTick["SMA_" + longMA] = reqTick['Close'].rolling(int(longMA)).mean()
 
-    # iterate over SMAs and use rolling() function in the pre-defined time window for the adjusted close 
-    # price which is in the 5th column of the data frame; each SMA will is then added as a new column
-    # for i in SMAs:
-    #     = reqTick.iloc[:,4].rolling(i).mean()
+    # convert dataframe reqTick to JSON and return response
+    json_response = reqTick.to_json(orient="records", indent=2)
+    return json_response
 
-    print(reqTick['Close'])
-    print(reqTick['Close'].rolling(13))
-    print(reqTick['Close'].rolling(13).mean())
+@app.route('/EMA')
+def EMA():
+    # get arguments from frontend
+    ticker = request.args.get('tickEMA')
+    shortMA = request.args.get('EMAtimesp')
+    longMA = request.args.get('EMAtimelp')
 
-    reqTick["SMA_20"] = reqTick['Close'].rolling(20).mean()
-    reqTick["SMA_50"] = reqTick['Close'].rolling(50).mean()
+    # use yfinance API to load information for the stock
+    reqTick = get_stock_data(ticker, "1y","1d")
 
-    print(reqTick)
+    # add short and long EMA data to the dataframe
+    reqTick["EMA_" + shortMA] = reqTick['Close'].ewm(span = int(shortMA)).mean()
+    reqTick["EMA_" + longMA] = reqTick['Close'].ewm(span = int(longMA)).mean()
 
-    return jsonify(reqTick)
+    # convert dataframe reqTick to JSON and return response
+    json_response = reqTick.to_json(orient="records", indent=2)
+    return json_response
 
-# @app.route('/EMA')
-# def EMA():
-#     return 'Hello, EMA!'
 
 if __name__ == '__main__':
     app.run(host='localhost', port=5000)
