@@ -61,15 +61,13 @@ function hidesponch() {
 var scanRSIOB = document.getElementById("stvb1");//create var for RSI overbought
 
 scanRSIOB.addEventListener("click", function() {//Create event listner that prints out the number of stocks searched for according to input value
-  // let xhr1 = new XMLHttpRequest();
-  // xhr1.open("GET", `http://localhost:5000/RSI`);
-  // xhr1.send();
+   let xhr1 = new XMLHttpRequest();
+   xhr1.open("GET", `http://localhost:5000/RSI`);
+   xhr1.send();
 
-  // xhr1.onload = function() {
-  //   let body = JSON.parse(xhr1.responseText);
-  // }
-
-  
+   xhr1.onload = function() {
+    let body = JSON.parse(xhr1.responseText);
+  } 
 
   var RSIOBnum = document.getElementById("stv1").value;
   console.log("You have searched for " + RSIOBnum + " stocks with an overbought RSI");
@@ -223,12 +221,6 @@ for (let i = 0; i < MACDUTnum && i < jsonData.length; i++) {
 });
 
 var scanMACDDT = document.getElementById("stvb4");//create var for MACD strong downtrend
-var tickMACDscan = document.getElementById("tickMACDbutton")
-
-tickMACDscan.addEventListener("click", function(){
-  var MACDticker = document.getElementById("tickMACD").value;
-  console.log(`${MACDticker}`);
-})
 
 scanMACDDT.addEventListener("click", function() {//Create event listner that prints out the number of stocks searched for according to input value
   var MACDDTnum = document.getElementById("stv4").value;
@@ -295,7 +287,7 @@ scanSMA.addEventListener("click", function(){
   }
   let foundMatch = false;
   for (let i = 0; i < jsonData.length; i++) {
-  if (jsonData[i].Ticker == tickSMA) {
+  if (ticklist[i] == tickSMA) {
      foundMatch = true;
      break;}}
  if (foundMatch) {
@@ -342,7 +334,7 @@ scanEMA.addEventListener("click", function(){
     
     let foundMatch = false;
     for (let i = 0; i < jsonData.length; i++) {
-    if (jsonData[i].Ticker == tickEMA) {
+    if (ticklist[i].Ticker == tickEMA) {
        foundMatch = true;
        break;}}
    if (foundMatch) {
@@ -918,4 +910,4 @@ let jsonData = [
   }
 ]
  const ticklist = [
-    "MMM", "AOS", "ABT", "ABBV", "ABMD", "ACN", "ATVI", "ADM", "ADBE", "AAP", "AMD", "AES", "AFL", "A", "APD", "AKAM", "ALB", "ALK", "ARE", "ALGN", "ALLE", "LNT", "ALL", "GOOGL", "GOOG", "MO", "AMZN", "AMCR", "AEE", "AAL", "AEP", "AXP", "AIG", "AMT", "AWK", "AMP", "ABC", "AME", "AMGN", "APH", "ADI", "ANSS", "AON", "APA", "AAPL", "AMAT", "APTV", "ANET", "AJG", "AIZ", "T", "ATO", "ADSK", "ADP", "AZO", "AVB", "AVY", "BKR", "BAC", "BBWI", "BAX", "BDX", "BRK.B", "BBY", "BIO", "TECH", "BIIB", "BLK", "BK", "BA", "BKNG", "BWA", "BXP", "BSX", "BMY", "AVGO", "BR", "BRO", "CHRW", "CDNS", "CZR", "CPB", "COF", "CAH", "KMX", "CCL", "CARR", "CTLT", "CAT", "CBOE", "CBRE", "CDW", "CE", "CNC", "CNP", "CDAY", "CF", "CRL", "SCHW", "CHTR", "CVX", "CMG", "CB", "CHD", "CI", "CINF", "CTAS", "CSCO", "C", "CFG", "CLX", "CME", "CMS", "KO", "CTSH", "CL", "CMCSA", "CMA", "CAG", "COP", "ED", "STZ", "CPRT", "GLW", "CTVA", "COST", "CTRA", "CCI", "CSX", "CMI", "CVS", "DHI", "DHR", "DRI", "DVA", "DE", "DAL", "XRAY", "DVN", "DXCM", "FANG", "DLR", "DFS", "DISH", "DG", "DLTR", "D", "DPZ", "DOV", "DOW", "DTE", "DUK", "DD", "DXC", "EMN", "ETN", "EBAY", "ECL", "EIX", "EW", "EA", "LLY", "EMR", "ENPH", "ETR", "EOG", "EFX", "EQIX", "EQR", "ESS", "EL", "ETSY", "RE", "EVRG", "ES", "EXC", "EXPE", "EXPD", "EXR", "XOM", "FFIV", "FAST", "FRT", "FDX", "FIS", "FITB", "FRC", "FE", "FISV", "FLT", "FMC", "F", "FTNT", "FTV", "FOXA", "FOX", "BEN",]
+    "1111", "MMM", "AOS", "ABT", "ABBV", "ABMD", "ACN", "ATVI", "ADM", "ADBE", "AAP", "AMD", "AES", "AFL", "A", "APD", "AKAM", "ALB", "ALK", "ARE", "ALGN", "ALLE", "LNT", "ALL", "GOOGL", "GOOG", "MO", "AMZN", "AMCR", "AEE", "AAL", "AEP", "AXP", "AIG", "AMT", "AWK", "AMP", "ABC", "AME", "AMGN", "APH", "ADI", "ANSS", "AON", "APA", "AAPL", "AMAT", "APTV", "ANET", "AJG", "AIZ", "T", "ATO", "ADSK", "ADP", "AZO", "AVB", "AVY", "BKR", "BAC", "BBWI", "BAX", "BDX", "BRK.B", "BBY", "BIO", "TECH", "BIIB", "BLK", "BK", "BA", "BKNG", "BWA", "BXP", "BSX", "BMY", "AVGO", "BR", "BRO", "CHRW", "CDNS", "CZR", "CPB", "COF", "CAH", "KMX", "CCL", "CARR", "CTLT", "CAT", "CBOE", "CBRE", "CDW", "CE", "CNC", "CNP", "CDAY", "CF", "CRL", "SCHW", "CHTR", "CVX", "CMG", "CB", "CHD", "CI", "CINF", "CTAS", "CSCO", "C", "CFG", "CLX", "CME", "CMS", "KO", "CTSH", "CL", "CMCSA", "CMA", "CAG", "COP", "ED", "STZ", "CPRT", "GLW", "CTVA", "COST", "CTRA", "CCI", "CSX", "CMI", "CVS", "DHI", "DHR", "DRI", "DVA", "DE", "DAL", "XRAY", "DVN", "DXCM", "FANG", "DLR", "DFS", "DISH", "DG", "DLTR", "D", "DPZ", "DOV", "DOW", "DTE", "DUK", "DD", "DXC", "EMN", "ETN", "EBAY", "ECL", "EIX", "EW", "EA", "LLY", "EMR", "ENPH", "ETR", "EOG", "EFX", "EQIX", "EQR", "ESS", "EL", "ETSY", "RE", "EVRG", "ES", "EXC", "EXPE", "EXPD", "EXR", "XOM", "FFIV", "FAST", "FRT", "FDX", "FIS", "FITB", "FRC", "FE", "FISV", "FLT", "FMC", "F", "FTNT", "FTV", "FOXA", "FOX", "BEN",]
