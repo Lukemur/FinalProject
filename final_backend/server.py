@@ -1,4 +1,5 @@
 from flask import Flask, jsonify, request
+from flask_cors import CORS
 import copy
 import numpy as np
 import pandas as pd
@@ -6,6 +7,7 @@ import yfinance as yf
 from datetime import datetime, timedelta
 
 app = Flask(__name__)
+CORS(app)
 
 # Helper Functions --------------------------------------------------
 
@@ -20,7 +22,8 @@ def get_stock_data(stock, period, interval):
     yf.pdr_override()
     df = yf.download(tickers=stock, interval=interval,period=period)
     df.reset_index(inplace=True) 
-    df['date'] = df['Date'].dt.date 
+    # df['date'] = df['Date'].dt.date 
+    df['Date'] = df['Date'].dt.strftime('%Y-%m-%d')
     
     return df
 
@@ -113,7 +116,7 @@ def MACD():
     for i in spTickList:
         # for each ticker add a new column to the data frame MACD and SIGNAL line data
         localSPDF['MACD_' + i] = MACD[i]
-        localSPDF["SIGNAL_"] = signal[i]
+        localSPDF["SIGNAL_" + i] = signal[i]
 
     # convert dataframe reqTick to JSON and return response
     json_response = localSPDF.to_json(orient="records", indent=2)
