@@ -212,74 +212,7 @@
     "SMA_50":301.847399292
   }
 ];
-        
-        var chartData = [];
-        for (var i = 0; i < data.length; i++) {
-            chartData.push([
-                new Date(data[i].Date),
-                data[i].Open,
-                data[i].High,
-                data[i].Low,
-                data[i].Close,
-                data[i].SMA_20, // Add SMA_20 value to the chart data
-                data[i].SMA_50 // Add SMA_50 value to the chart data
-            ]);
-        }
-        
-        var traceCandlestick = {
-            x: chartData.map(function(item) { return item[0]; }),
-            close: chartData.map(function(item) { return item[4]; }),
-            high: chartData.map(function(item) { return item[2]; }),
-            low: chartData.map(function(item) { return item[3]; }),
-            open: chartData.map(function(item) { return item[1]; }),
-            type: 'candlestick',
-            xaxis: 'x',
-            yaxis: 'y'
-        };
-        
-        var traceSMA20 = {
-            x: chartData.map(function(item) { return item[0]; }),
-            y: chartData.map(function(item) { return item[5]; }), // Use SMA_20 values for y-axis
-            mode: 'lines',
-            name: 'SMA_20',
-            xaxis: 'x',
-            yaxis: 'y2'
-        };
-        
-        var traceSMA50 = {
-            x: chartData.map(function(item) { return item[0]; }),
-            y: chartData.map(function(item) { return item[6]; }), // Use SMA_50 values for y-axis
-            mode: 'lines',
-            name: 'SMA_50',
-            xaxis: 'x',
-            yaxis: 'y2'
-        };
-        
-        var layout = {
-            title: 'Candlestick Chart with SMA_20 and SMA_50',
-            dragmode: 'zoom',
-            showlegend: true,
-            xaxis: {
-                rangeslider: {
-                    visible: false
-                }
-            },
-            yaxis: {
-                autorange: true,
-                type: 'linear',
-                title: 'Price'
-            },
-            yaxis2: {
-                overlaying: 'y',
-                side: 'right',
-                autorange: true,
-                type: 'linear',
-                title: 'SMA'
-            }
-        };
-        
-        Plotly.newPlot('chart', [traceCandlestick, traceSMA20, traceSMA50], layout);
-    </script>
+        </script>
 
 
       <div id="Stockp"> <!--Beginning of stock picker class-->

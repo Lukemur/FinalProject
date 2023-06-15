@@ -1,9 +1,9 @@
 // Global Variables
 
-// const tickString = "MMM AOS ABT ABBV ABMD ACN ATVI ADM ADBE AAP AMD AES AFL A APD AKAM ALB ALK ARE ALGN ALLE LNT ALL GOOGL GOOG MO AMZN AMCR AEE AAL AEP AXP AIG AMT AWK AMP ABC AME AMGN APH ADI ANSS AON APA AAPL AMAT APTV ANET AJG AIZ T ATO ADSK ADP AZO AVB AVY BKR BAC BBWI BAX BDX BRK.B BBY BIO TECH BIIB BLK BK BA BKNG BWA BXP BSX BMY AVGO BR BRO CHRW CDNS CZR CPB COF CAH KMX CCL CARR CTLT CAT CBOE CBRE CDW CE CNC CNP CDAY CF CRL SCHW CHTR CVX CMG CB CHD CI CINF CTAS CSCO C CFG CLX CME CMS KO CTSH CL CMCSA CMA CAG COP ED STZ CPRT GLW CTVA COST CTRA CCI CSX CMI CVS DHI DHR DRI DVA DE DAL XRAY DVN DXCM FANG DLR DFS DISH DG DLTR D DPZ DOV DOW DTE DUK DD DXC EMN ETN EBAY ECL EIX EW EA LLY EMR ENPH ETR EOG EFX EQIX EQR ESS EL ETSY RE EVRG ES EXC EXPE EXPD EXR XOM FFIV FAST FRT FDX FIS FITB FRC FE FISV FLT FMC F FTNT FTV FOXA FOX BEN FCX GPS GRMN IT GNRC GD GE GIS GM GPC GILD GPN GL GS HAL HBI HAS HCA PEAK HSIC HES HPE HLT HOLX HD HON HRL HST HWM HPQ HUM HBAN HII IBM IEX IDXX ITW ILMN INCY IR INTC ICE IFF IP IPG INTU ISRG IVZ IPGP IQV IRM JBHT JKHY J SJM JNJ JCI JPM JNPR KSU K KEY KEYS KMB KIM KMI KLAC KHC KR LHX LH LRCX LW LVS LEG LDOS LEN LNC LIN LYV LKQ LMT L LOW LUMN LYB MTB MRO MPC MKTX MAR MMC MLM MAS MA MTCH MKC MCD MCK MDT MRK MET MTD MGM MCHP MU MSFT MAA MRNA MHK TAP MDLZ MPWR MNST MCO MS MSI MSCI NDAQ NTAP NFLX NWL NEM NWSA NWS NEE NKE NI NSC NTRS NOC NLOK NCLH NRG NUE NVDA NVR NXPI ORLY OXY ODFL OMC OKE ORCL OGN OTIS PCAR PKG PH PAYX PAYC PYPL PENN PNR PEP PKI PFE PM PSX PNW PXD PNC POOL PPG PPL PFG PG PGR PLD PRU PTC PEG PSA PHM PVH QRVO QCOM PWR DGX RL RJF RTX O REG REGN RF RSG RMD RHI ROK ROL ROP ROST RCL SPGI CRM SBAC SLB STX SEE SRE NOW SHW SPG SWKS SNA SO LUV SWK SBUX STT STE SYK SYF SNPS SYY TMUS TROW TTWO TPR TGT TEL TDY TFX TER TSLA TXN TXT COO HIG HSY MOS TRV DIS TMO TJX TSCO TT TDG TRMB TFC TYL TSN USB UDR ULTA UAA UA UNP UAL UPS URI UNH UHS VLO VTR VRSN VRSK VZ VRTX VFC VTRS V VNO VMC WRB GWW WAB WBA WMT WM WAT WEC WFC WELL WST WDC WU WRK WY WHR WMB WYNN XEL XLNX XYL YUM ZBRA ZBH ZION ZTS";
-// const ticklist = tickString.split(" ");
-const tickString = "SPY AAPL";
-const ticklist = ["SPY", "AAPL"];
+ let tickString = "MMM AOS ABT ABBV ABMD ACN ATVI ADM ADBE AAP AMD AES AFL A APD AKAM ALB ALK ARE ALGN ALLE LNT ALL GOOGL GOOG MO AMZN AMCR AEE AAL AEP AXP AIG AMT AWK AMP ABC AME AMGN APH ADI ANSS AON APA AAPL AMAT APTV ANET AJG AIZ T ATO ADSK ADP AZO AVB AVY BKR BAC BBWI BAX BDX BRK.B BBY BIO TECH BIIB BLK BK BA BKNG BWA BXP BSX BMY AVGO BR BRO CHRW CDNS CZR CPB COF CAH KMX CCL CARR CTLT CAT CBOE CBRE CDW CE CNC CNP CDAY CF CRL SCHW CHTR CVX CMG CB CHD CI CINF CTAS CSCO C CFG CLX CME CMS KO CTSH CL CMCSA CMA CAG COP ED STZ CPRT GLW CTVA COST CTRA CCI CSX CMI CVS DHI DHR DRI DVA DE DAL XRAY DVN DXCM FANG DLR DFS DISH DG DLTR D DPZ DOV DOW DTE DUK DD DXC EMN ETN EBAY ECL EIX EW EA LLY EMR ENPH ETR EOG EFX EQIX EQR ESS EL ETSY RE EVRG ES EXC EXPE EXPD EXR XOM FFIV FAST FRT FDX FIS FITB FRC FE FISV FLT FMC F FTNT FTV FOXA FOX BEN FCX GPS GRMN IT GNRC GD GE GIS GM GPC GILD GPN GL GS HAL HBI HAS HCA PEAK HSIC HES HPE HLT HOLX HD HON HRL HST HWM HPQ HUM HBAN HII IBM IEX IDXX ITW ILMN INCY IR INTC ICE IFF IP IPG INTU ISRG IVZ IPGP IQV IRM JBHT JKHY J SJM JNJ JCI JPM JNPR KSU K KEY KEYS KMB KIM KMI KLAC KHC KR LHX LH LRCX LW LVS LEG LDOS LEN LNC LIN LYV LKQ LMT L LOW LUMN LYB MTB MRO MPC MKTX MAR MMC MLM MAS MA MTCH MKC MCD MCK MDT MRK MET MTD MGM MCHP MU MSFT MAA MRNA MHK TAP MDLZ MPWR MNST MCO MS MSI MSCI NDAQ NTAP NFLX NWL NEM NWSA NWS NEE NKE NI NSC NTRS NOC NLOK NCLH NRG NUE NVDA NVR NXPI ORLY OXY ODFL OMC OKE ORCL OGN OTIS PCAR PKG PH PAYX PAYC PYPL PENN PNR PEP PKI PFE PM PSX PNW PXD PNC POOL PPG PPL PFG PG PGR PLD PRU PTC PEG PSA PHM PVH QRVO QCOM PWR DGX RL RJF RTX O REG REGN RF RSG RMD RHI ROK ROL ROP ROST RCL SPGI CRM SBAC SLB STX SEE SRE NOW SHW SPG SWKS SNA SO LUV SWK SBUX STT STE SYK SYF SNPS SYY TMUS TROW TTWO TPR TGT TEL TDY TFX TER TSLA TXN TXT COO HIG HSY MOS TRV DIS TMO TJX TSCO TT TDG TRMB TFC TYL TSN USB UDR ULTA UAA UA UNP UAL UPS URI UNH UHS VLO VTR VRSN VRSK VZ VRTX VFC VTRS V VNO VMC WRB GWW WAB WBA WMT WM WAT WEC WFC WELL WST WDC WU WRK WY WHR WMB WYNN XEL XLNX XYL YUM ZBRA ZBH ZION ZTS";
+ let ticklist = tickString.split(" ");
+//const tickString = "SPY AAPL";
+//const ticklist = ["SPY", "AAPL"];
 // make new global var to store current JSON response to generate graph
 let graphJSON;
 
@@ -371,6 +371,7 @@ scanSMA.addEventListener("click", function(){
       console.log("We found your stock!");
       let stockLine = document.createElement('p');
       stockLine.textContent = `Ticker: ${tickSMA.toUpperCase()} | MACD Downtrend: ${jsonData[i].MACDDT} | Price: ${jsonData[i].PRICE} `;
+      
   } else {
     console.log("We could not find your stock, make sure your search is case-sensitive");
   }
@@ -421,11 +422,7 @@ scanEMA.addEventListener("click", function(){
       break;}}
   if (foundMatch) {
       console.log("We found your stock!");
-      let stockLine = document.createElement('p');
-      stockLine.textContent = `Ticker: ${tickEMA.toUpperCase()} | MACD Downtrend: ${jsonData[i].MACDDT} | Price: ${jsonData[i].PRICE} `;
-  } else {
-    console.log("We could not find your stock, make sure your search is case-sensitive");
-  }
+      
 
  // request for EMA data
  const xhr6 = new XMLHttpRequest();
@@ -447,18 +444,93 @@ scanEMA.addEventListener("click", function(){
       let shortEMA = body[i]['EMA_' + timeEMAsp];
       let longEMA = body[i]['EMA_' + timeEMAlp];
       // if (i == 5) { 
-      //   console.log(ptDate);
-      //   console.log(ptVolume);
-      //   console.log(ptHigh);
-      //   console.log(ptLow);
-      //   console.log(ptOpen);
-      //   console.log(ptClose);
-      //   console.log(ptAdjClose);
-      //   console.log(shortEMA);
-      //   console.log(longEMA);
-      // } 
+     //  console.log(ptDate);
+     // console.log(ptVolume);
+    //   console.log(ptHigh);
+     //  console.log(ptLow);
+     // console.log(ptOpen);
+      // console.log(ptClose);
+      //  console.log(ptAdjClose);
+       // console.log(shortEMA);
+      //console.log(longEMA);
     }
+    var chartData = [];
+    for (var i = 0; i < body.length; i++) {
+        chartData.push([
+            new Date(body[i].Date),
+            body[i].Open,
+            body[i].High,
+            body[i].Low,
+            body[i].Close,
+            body[i].SMA_20, // Add SMA_20 value to the chart data
+            body[i].SMA_50 // Add SMA_50 value to the chart data
+        ]);
+    }
+    
+    var traceCandlestick = {
+        x: chartData.map(function(item) { return item[0]; }),
+        close: chartData.map(function(item) { return item[4]; }),
+        high: chartData.map(function(item) { return item[2]; }),
+        low: chartData.map(function(item) { return item[3]; }),
+        open: chartData.map(function(item) { return item[1]; }),
+        type: 'candlestick',
+        xaxis: 'x',
+        yaxis: 'y'
+    };
+    
+    var traceSMA20 = {
+        x: chartData.map(function(item) { return item[0]; }),
+        y: chartData.map(function(item) { return item[5]; }), // Use SMA_20 values for y-axis
+        mode: 'lines',
+        name: 'SMA_20',
+        xaxis: 'x',
+        yaxis: 'y2'
+    };
+    
+    var traceSMA50 = {
+        x: chartData.map(function(item) { return item[0]; }),
+        y: chartData.map(function(item) { return item[6]; }), // Use SMA_50 values for y-axis
+        mode: 'lines',
+        name: 'SMA_50',
+        xaxis: 'x',
+        yaxis: 'y2'
+    };
+    
+    var layout = {
+        title: 'Candlestick Chart with SMA_20 and SMA_50',
+        dragmode: 'zoom',
+        showlegend: true,
+        xaxis: {
+            rangeslider: {
+                visible: false
+            }
+        },
+        yaxis: {
+            autorange: true,
+            type: 'linear',
+            title: 'Price'
+        },
+        yaxis2: {
+            overlaying: 'y',
+            side: 'right',
+            autorange: true,
+            type: 'linear',
+            title: 'SMA'
+        }
+    };
+    
+    Plotly.newPlot('chart', [traceCandlestick, traceSMA20, traceSMA50], layout);
+}
+
+
+      let stockLine = document.createElement('p');
+      //stockLine.textContent = `Ticker: ${tickEMA.toUpperCase()} | MACD Downtrend: ${jsonData[i].MACDDT} | Price: ${jsonData[i].PRICE} `;
+     
+  } else {
+    console.log("We could not find your stock, make sure your search is case-sensitive");
   }
+
+
 })
 //end of JS for stockpicker drop-down menu
 
