@@ -9,6 +9,20 @@ from datetime import datetime, timedelta
 app = Flask(__name__)
 CORS(app)
 
+
+# Global Variables --------------------------------------------------
+
+# string stores all tickers for stocks in S&P 500; separated by whitespaces
+spTickers = "MMM AOS ABT ABBV ABMD ACN ATVI ADM ADBE AAP AMD AES AFL A APD AKAM ALB ALK ARE ALGN ALLE LNT ALL GOOGL GOOG MO AMZN AMCR AEE AAL AEP AXP AIG AMT AWK AMP ABC AME AMGN APH ADI ANSS AON APA AAPL AMAT APTV ANET AJG AIZ T ATO ADSK ADP AZO AVB AVY BKR BAC BBWI BAX BDX BBY BIO TECH BIIB BLK BK BA BKNG BWA BXP BSX BMY AVGO BR BRO CHRW CDNS CZR CPB COF CAH KMX CCL CARR CTLT CAT CBOE CBRE CDW CE CNC CNP CDAY CF CRL SCHW CHTR CVX CMG CB CHD CI CINF CTAS CSCO C CFG CLX CME CMS KO CTSH CL CMCSA CMA CAG COP ED STZ CPRT GLW CTVA COST CTRA CCI CSX CMI CVS DHI DHR DRI DVA DE DAL XRAY DVN DXCM FANG DLR DFS DISH DG DLTR D DPZ DOV DOW DTE DUK DD DXC EMN ETN EBAY ECL EIX EW EA LLY EMR ENPH ETR EOG EFX EQIX EQR ESS EL ETSY RE EVRG ES EXC EXPE EXPD EXR XOM FFIV FAST FRT FDX FIS FITB FRC FE FISV FLT FMC F FTNT FTV FOXA FOX BEN FCX GPS GRMN IT GNRC GD GE GIS GM GPC GILD GPN GL GS HAL HBI HAS HCA PEAK HSIC HES HPE HLT HOLX HD HON HRL HST HWM HPQ HUM HBAN HII IBM IEX IDXX ITW ILMN INCY IR INTC ICE IFF IP IPG INTU ISRG IVZ IPGP IQV IRM JBHT JKHY J SJM JNJ JCI JPM JNPR K KEY KEYS KMB KIM KMI KLAC KHC KR LHX LH LRCX LW LVS LEG LDOS LEN LNC LIN LYV LKQ LMT L LOW LUMN LYB MTB MRO MPC MKTX MAR MMC MLM MAS MA MTCH MKC MCD MCK MDT MRK MET MTD MGM MCHP MU MSFT MAA MRNA MHK TAP MDLZ MPWR MNST MCO MS MSI MSCI NDAQ NTAP NFLX NWL NEM NWSA NWS NEE NKE NI NSC NTRS NOC NCLH NRG NUE NVDA NVR NXPI ORLY OXY ODFL OMC OKE ORCL OGN OTIS PCAR PKG PH PAYX PAYC PYPL PENN PNR PEP PKI PFE PM PSX PNW PXD PNC POOL PPG PPL PFG PG PGR PLD PRU PTC PEG PSA PHM PVH QRVO QCOM PWR DGX RL RJF RTX O REG REGN RF RSG RMD RHI ROK ROL ROP ROST RCL SPGI CRM SBAC SLB STX SEE SRE NOW SHW SPG SWKS SNA SO LUV SWK SBUX STT STE SYK SYF SNPS SYY TMUS TROW TTWO TPR TGT TEL TDY TFX TER TSLA TXN TXT COO HIG HSY MOS TRV DIS TMO TJX TSCO TT TDG TRMB TFC TYL TSN USB UDR ULTA UAA UA UNP UAL UPS URI UNH UHS VLO VTR VRSN VRSK VZ VRTX VFC VTRS V VNO VMC WRB GWW WAB WBA WMT WM WAT WEC WFC WELL WST WDC WU WRK WY WHR WMB WYNN XEL XYL YUM ZBRA ZBH ZION ZTS"
+# spTickers = "MMM AOS ABT ABBV ATVI ADM" # ADBE AAP AMD AES AFL A APD AKAM ALB ALK ARE ALGN ALLE LNT ALL GOOGL GOOG MO AMZN AMCR AEE AAL AEP AXP AIG AMT AWK AMP ABC AME AMGN APH ADI ANSS AON APA AAPL AMAT APTV ANET AJG AIZ T ATO ADSK ADP AZO AVB AVY BKR BAC BBWI BAX BDX BBY BIO TECH BIIB BLK BK BA BKNG BWA BXP BSX BMY AVGO BR BRO CHRW CDNS CZR CPB COF CAH KMX CCL CARR CTLT CAT CBOE CBRE CDW CE CNC CNP CDAY CF CRL SCHW CHTR CVX CMG CB CHD CI CINF CTAS CSCO C CFG CLX CME CMS KO CTSH CL CMCSA CMA CAG COP ED STZ CPRT GLW CTVA COST CTRA CCI CSX CMI CVS DHI DHR DRI DVA DE DAL XRAY DVN DXCM FANG DLR DFS DISH DG DLTR D DPZ DOV DOW DTE DUK DD DXC EMN ETN EBAY ECL EIX EW EA LLY EMR ENPH ETR EOG EFX EQIX EQR ESS EL ETSY RE EVRG ES EXC EXPE EXPD EXR XOM FFIV FAST FRT FDX FIS FITB FRC FE FISV FLT FMC F FTNT FTV FOXA FOX BEN FCX GPS GRMN IT GNRC GD GE GIS GM GPC GILD GPN GL GS HAL HBI HAS HCA PEAK HSIC HES HPE HLT HOLX HD HON HRL HST HWM HPQ HUM HBAN HII IBM IEX IDXX ITW ILMN INCY IR INTC ICE IFF IP IPG INTU ISRG IVZ IPGP IQV IRM JBHT JKHY J SJM JNJ JCI JPM JNPR K KEY KEYS KMB KIM KMI KLAC KHC KR LHX LH";
+# spTickers = "SPY AAPL"
+# spTickList = ["SPY", "AAPL"]
+# use spTickers string to create a list of all S&P 500 stock tickers
+spTickList = spTickers.split(' ')
+# use default dataframe constructor to initialize global dataframe variable
+spDF = pd.DataFrame()
+
+
 # Helper Functions --------------------------------------------------
 
 # def winInit(tickers):
@@ -20,7 +34,7 @@ CORS(app)
 def get_stock_data(stock, period, interval):
     ticker = stock
     yf.pdr_override()
-    df = yf.download(tickers=stock, interval=interval,period=period)
+    df = yf.download(tickers=stock, threads=True,interval=interval,period=period)
     df.reset_index(inplace=True) 
     # df['date'] = df['Date'].dt.date 
     df['Date'] = df['Date'].dt.strftime('%Y-%m-%d')
@@ -28,38 +42,33 @@ def get_stock_data(stock, period, interval):
     return df
 
 def calcRSI(data):
-    delta = data['Close'].diff(1).dropna()
 
-    # Create two copies of the Closing price Series
-    delta_up = delta.copy()
-    delta_down = delta.copy()
+    df_list = list()
+    df_list.append(data) # initialize df list to data arg
+    for ticker in spTickList:
+        delta = data['Close'][ticker].diff(1).dropna()
 
-    delta_up[ delta_up < 0 ] = 0
-    delta_down[ delta_down > 0 ] = 0
+        # Create two copies of the Closing price Series
+        delta_up = delta.copy()
+        delta_down = delta.copy()
+        delta_up[ delta_up < 0 ] = 0
+        delta_down[ delta_down > 0 ] = 0
 
-    # Verify that we did not make any mistakes
-    # change.equals(change_up+change_down)
+        # Calculate the rolling average of average up and average down
+        avg_up = delta_up.rolling(14).mean()
+        avg_down = delta_down.rolling(14).mean().abs()
 
-    # Calculate the rolling average of average up and average down
-    avg_up = delta_up.rolling(14).mean()
-    avg_down = delta_down.rolling(14).mean().abs()
+        # Calculate RSI
+        RSI = 100 * avg_up / (avg_up + avg_down)
 
-    # Calculate RSI
-    RSI = 100 * avg_up / (avg_up + avg_down)
+        df_list.append(RSI)
 
-    return RSI
+    # combine all dataframes into a single dataframe
+    df = pd.concat(df_list, axis=1)
 
 
-# Global Variables --------------------------------------------------
 
-# string stores all tickers for stocks in S&P 500; separated by whitespaces
-# spTickers = "MMM AOS ABT ABBV ABMD ACN ATVI ADM ADBE AAP AMD AES AFL A APD AKAM ALB ALK ARE ALGN ALLE LNT ALL GOOGL GOOG MO AMZN AMCR AEE AAL AEP AXP AIG AMT AWK AMP ABC AME AMGN APH ADI ANSS AON APA AAPL AMAT APTV ANET AJG AIZ T ATO ADSK ADP AZO AVB AVY BKR BAC BBWI BAX BDX BBY BIO TECH BIIB BLK BK BA BKNG BWA BXP BSX BMY AVGO BR BRO CHRW CDNS CZR CPB COF CAH KMX CCL CARR CTLT CAT CBOE CBRE CDW CE CNC CNP CDAY CF CRL SCHW CHTR CVX CMG CB CHD CI CINF CTAS CSCO C CFG CLX CME CMS KO CTSH CL CMCSA CMA CAG COP ED STZ CPRT GLW CTVA COST CTRA CCI CSX CMI CVS DHI DHR DRI DVA DE DAL XRAY DVN DXCM FANG DLR DFS DISH DG DLTR D DPZ DOV DOW DTE DUK DD DXC EMN ETN EBAY ECL EIX EW EA LLY EMR ENPH ETR EOG EFX EQIX EQR ESS EL ETSY RE EVRG ES EXC EXPE EXPD EXR XOM FFIV FAST FRT FDX FIS FITB FRC FE FISV FLT FMC F FTNT FTV FOXA FOX BEN FCX GPS GRMN IT GNRC GD GE GIS GM GPC GILD GPN GL GS HAL HBI HAS HCA PEAK HSIC HES HPE HLT HOLX HD HON HRL HST HWM HPQ HUM HBAN HII IBM IEX IDXX ITW ILMN INCY IR INTC ICE IFF IP IPG INTU ISRG IVZ IPGP IQV IRM JBHT JKHY J SJM JNJ JCI JPM JNPR K KEY KEYS KMB KIM KMI KLAC KHC KR LHX LH LRCX LW LVS LEG LDOS LEN LNC LIN LYV LKQ LMT L LOW LUMN LYB MTB MRO MPC MKTX MAR MMC MLM MAS MA MTCH MKC MCD MCK MDT MRK MET MTD MGM MCHP MU MSFT MAA MRNA MHK TAP MDLZ MPWR MNST MCO MS MSI MSCI NDAQ NTAP NFLX NWL NEM NWSA NWS NEE NKE NI NSC NTRS NOC NCLH NRG NUE NVDA NVR NXPI ORLY OXY ODFL OMC OKE ORCL OGN OTIS PCAR PKG PH PAYX PAYC PYPL PENN PNR PEP PKI PFE PM PSX PNW PXD PNC POOL PPG PPL PFG PG PGR PLD PRU PTC PEG PSA PHM PVH QRVO QCOM PWR DGX RL RJF RTX O REG REGN RF RSG RMD RHI ROK ROL ROP ROST RCL SPGI CRM SBAC SLB STX SEE SRE NOW SHW SPG SWKS SNA SO LUV SWK SBUX STT STE SYK SYF SNPS SYY TMUS TROW TTWO TPR TGT TEL TDY TFX TER TSLA TXN TXT COO HIG HSY MOS TRV DIS TMO TJX TSCO TT TDG TRMB TFC TYL TSN USB UDR ULTA UAA UA UNP UAL UPS URI UNH UHS VLO VTR VRSN VRSK VZ VRTX VFC VTRS V VNO VMC WRB GWW WAB WBA WMT WM WAT WEC WFC WELL WST WDC WU WRK WY WHR WMB WYNN XEL XYL YUM ZBRA ZBH ZION ZTS"
-spTickers = "SPY AAPL"
-# spTickList = ["SPY", "AAPL"]
-# use spTickers string to create a list of all S&P 500 stock tickers
-spTickList = spTickers.split(' ')
-# use default dataframe constructor to initialize global dataframe variable
-spDF = pd.DataFrame()
+    return df
 
 
 # API Endpoints -----------------------------------------------------
@@ -84,19 +93,12 @@ def RSI():
 
     # use copy module to make a local copy of the global S&P 500 dataframe
     localSPDF = copy.copy(spDF)
-    # print(localSPDF)
 
     # Call RSI Helper Function to create dataframe for RSI values
     RSI_df = calcRSI(localSPDF)
-    
-    for i in spTickList:
-        # for each ticker add a new column to the data frame RSI_tickName containing the ticker's RSI values
-        # localSPDF['RSI_' + i] = RSI_df[i]
-        # localSPDF[ "('RSI', '" + i + "')" ] = RSI_df[i]
-        localSPDF[ ('RSI', i) ] = RSI_df[i]
 
-    json_response = localSPDF.to_json(orient="records", indent=2)
-    print(localSPDF.tail(15).to_json(orient="records", indent=2))
+    json_response = RSI_df.to_json(orient="records", indent=2)
+    # print(RSI_df.tail().to_json(orient="records", indent=2))
 
     return json_response
 
