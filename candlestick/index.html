@@ -1,61 +1,261 @@
+<!DOCTYPE html>
+<html>
 <head>
-    <!-- Other HTML code -->
-    <link rel="stylesheet" href="style.css">
-    <script src="https://cdn.jsdelivr.net/npm/apexcharts@3.27.3/dist/apexcharts.min.js"></script>
-    <script src="script.js"></script>
-  </head>
-  
-  <body>
-    <div class="chart-container">
-      <div id="chart"></div>
-    </div>
-  
+    <title>Candlestick Chart</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body>
+    <div id="chart"></div>
     <script>
-    fetch('json.txt')
-    .then(response => response.json())
-    .then(data => {
-        // Prepare the data for the candlestick graph
-        var series = [
-        {
-            data: data.map(item => ({
-            x: item.Date,
-            y: [
-                Math.round(item.Open),
-                Math.round(item.High),
-                Math.round(item.Low),
-                Math.round(item.Close),
-            ],
-            })),
-        },
-        ];
-
-        // Create the chart using ApexCharts
-        var options = {
-        series: series,
-        chart: {
+        var data = [
+  {
+    "Date":1684108800000,
+    "Open":309.1000061035,
+    "High":309.8999938965,
+    "Low":307.5899963379,
+    "Close":309.4599914551,
+    "Adj Close":308.7849731445,
+    "Volume":16336500,
+    "date":1684108800000,
+    "SMA_20":300.0634979248,
+    "SMA_50":285.0903997803
+  },
+  {
+    "Date":1684195200000,
+    "Open":309.8299865723,
+    "High":313.7099914551,
+    "Low":309.8299865723,
+    "Close":311.7399902344,
+    "Adj Close":311.0599975586,
+    "Volume":26730300,
+    "date":1684195200000,
+    "SMA_20":301.2319976807,
+    "SMA_50":286.1877996826
+  },
+  {
+    "Date":1684281600000,
+    "Open":312.2900085449,
+    "High":314.4299926758,
+    "Low":310.7399902344,
+    "Close":314.0,
+    "Adj Close":314.0,
+    "Volume":24315000,
+    "date":1684281600000,
+    "SMA_20":302.5094970703,
+    "SMA_50":287.3847998047
+  },
+  {
+    "Date":1684368000000,
+    "Open":314.5299987793,
+    "High":319.0400085449,
+    "Low":313.7200012207,
+    "Close":318.5199890137,
+    "Adj Close":318.5199890137,
+    "Volume":27276000,
+    "date":1684368000000,
+    "SMA_20":304.1299972534,
+    "SMA_50":288.681199646
+  },
+  {
+    "Date":1684454400000,
+    "Open":316.7399902344,
+    "High":318.75,
+    "Low":316.3699951172,
+    "Close":318.3399963379,
+    "Adj Close":318.3399963379,
+    "Volume":27529500,
+    "date":1684454400000,
+    "SMA_20":305.758996582,
+    "SMA_50":290.0015994263
+  },
+  {
+    "Date":1684713600000,
+    "Open":318.6000061035,
+    "High":322.5899963379,
+    "Low":318.0100097656,
+    "Close":321.1799926758,
+    "Adj Close":321.1799926758,
+    "Volume":24115700,
+    "date":1684713600000,
+    "SMA_20":307.7294967651,
+    "SMA_50":291.453399353
+  },
+  {
+    "Date":1684800000000,
+    "Open":320.0299987793,
+    "High":322.7200012207,
+    "Low":315.25,
+    "Close":315.2600097656,
+    "Adj Close":315.2600097656,
+    "Volume":30797200,
+    "date":1684800000000,
+    "SMA_20":309.721496582,
+    "SMA_50":292.680199585
+  },
+  {
+    "Date":1684886400000,
+    "Open":314.7300109863,
+    "High":316.5,
+    "Low":312.6099853516,
+    "Close":313.8500061035,
+    "Adj Close":313.8500061035,
+    "Volume":23384900,
+    "date":1684886400000,
+    "SMA_20":310.6454971313,
+    "SMA_50":293.7413995361
+  },
+  {
+    "Date":1684972800000,
+    "Open":323.2399902344,
+    "High":326.8999938965,
+    "Low":320.0,
+    "Close":325.9200134277,
+    "Adj Close":325.9200134277,
+    "Volume":43301700,
+    "date":1684972800000,
+    "SMA_20":311.6999984741,
+    "SMA_50":294.9509997559
+  },
+  {
+    "Date":1685059200000,
+    "Open":324.0199890137,
+    "High":333.3999938965,
+    "Low":323.8800048828,
+    "Close":332.8900146484,
+    "Adj Close":332.8900146484,
+    "Volume":36630600,
+    "date":1685059200000,
+    "SMA_20":312.9814987183,
+    "SMA_50":296.0847998047
+  },
+  {
+    "Date":1685404800000,
+    "Open":335.2300109863,
+    "High":335.7399902344,
+    "Low":330.5199890137,
+    "Close":331.2099914551,
+    "Adj Close":331.2099914551,
+    "Volume":29503100,
+    "date":1685404800000,
+    "SMA_20":314.2639984131,
+    "SMA_50":297.1203997803
+  },
+  {
+    "Date":1685491200000,
+    "Open":332.2900085449,
+    "High":335.9400024414,
+    "Low":327.3299865723,
+    "Close":328.3900146484,
+    "Adj Close":328.3900146484,
+    "Volume":45950600,
+    "date":1685491200000,
+    "SMA_20":315.4129989624,
+    "SMA_50":298.2435998535
+  },
+  {
+    "Date":1685577600000,
+    "Open":325.9299926758,
+    "High":333.5299987793,
+    "Low":324.7200012207,
+    "Close":332.5799865723,
+    "Adj Close":332.5799865723,
+    "Volume":26773900,
+    "date":1685577600000,
+    "SMA_20":316.8219985962,
+    "SMA_50":299.4195996094
+  },
+  {
+    "Date":1685664000000,
+    "Open":334.25,
+    "High":337.5,
+    "Low":332.549987793,
+    "Close":335.3999938965,
+    "Adj Close":335.3999938965,
+    "Volume":25864000,
+    "date":1685664000000,
+    "SMA_20":318.3214981079,
+    "SMA_50":300.6817993164
+  },
+  {
+    "Date":1685923200000,
+    "Open":335.2200012207,
+    "High":338.549987793,
+    "Low":334.6600952148,
+    "Close":335.9400024414,
+    "Adj Close":335.9400024414,
+    "Volume":21241193,
+    "date":1685923200000,
+    "SMA_20":319.5859985352,
+    "SMA_50":301.847399292
+  }
+];
+        
+        var chartData = [];
+        for (var i = 0; i < data.length; i++) {
+            chartData.push([
+                new Date(data[i].Date),
+                data[i].Open,
+                data[i].High,
+                data[i].Low,
+                data[i].Close,
+                data[i].SMA_20, // Add SMA_20 value to the chart data
+                data[i].SMA_50 // Add SMA_50 value to the chart data
+            ]);
+        }
+        
+        var traceCandlestick = {
+            x: chartData.map(function(item) { return item[0]; }),
+            close: chartData.map(function(item) { return item[4]; }),
+            high: chartData.map(function(item) { return item[2]; }),
+            low: chartData.map(function(item) { return item[3]; }),
+            open: chartData.map(function(item) { return item[1]; }),
             type: 'candlestick',
-            height: 400,
-        },
-        title: {
-            text: 'Candlestick Chart',
-            align: 'center',
-        },
-        xaxis: {
-            type: 'datetime',
-        },
-        yaxis: {
-            labels: {
-            formatter: function (value) {
-                return Math.round(value);
-            },
-            },
-        },
+            xaxis: 'x',
+            yaxis: 'y'
         };
-
-        var chart = new ApexCharts(document.querySelector('#chart'), options);
-        chart.render();
-    })
-    .catch(error => console.error(error));
+        
+        var traceSMA20 = {
+            x: chartData.map(function(item) { return item[0]; }),
+            y: chartData.map(function(item) { return item[5]; }), // Use SMA_20 values for y-axis
+            mode: 'lines',
+            name: 'SMA_20',
+            xaxis: 'x',
+            yaxis: 'y2'
+        };
+        
+        var traceSMA50 = {
+            x: chartData.map(function(item) { return item[0]; }),
+            y: chartData.map(function(item) { return item[6]; }), // Use SMA_50 values for y-axis
+            mode: 'lines',
+            name: 'SMA_50',
+            xaxis: 'x',
+            yaxis: 'y2'
+        };
+        
+        var layout = {
+            title: 'Candlestick Chart with SMA_20 and SMA_50',
+            dragmode: 'zoom',
+            showlegend: true,
+            xaxis: {
+                rangeslider: {
+                    visible: false
+                }
+            },
+            yaxis: {
+                autorange: true,
+                type: 'linear',
+                title: 'Price'
+            },
+            yaxis2: {
+                overlaying: 'y',
+                side: 'right',
+                autorange: true,
+                type: 'linear',
+                title: 'SMA'
+            }
+        };
+        
+        Plotly.newPlot('chart', [traceCandlestick, traceSMA20, traceSMA50], layout);
     </script>
-  </body>
-  
+</body>
+</html>
