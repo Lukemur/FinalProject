@@ -70,91 +70,70 @@ function hidesponch() {
 var scanRSIOB = document.getElementById("stvb1");//create var for RSI overbought
 
 scanRSIOB.addEventListener("click", function() {//Create event listner that prints out the number of stocks searched for according to input value 
- var RSIOBnum = document.getElementById("stv1").value;
- console.log("You have searched for " + RSIOBnum + " stocks with an overbought RSI");
- clearStockLines();
- hidesponch();
+  var RSIOBnum = document.getElementById("stv1").value;
+  console.log("You have searched for " + RSIOBnum + " stocks with an overbought RSI");
+  var max_rsi = new Array(RSIOBnum);
+  clearStockLines();
+  hidesponch();
 
- // Sort the JSON data by RSIOB in descending order
- jsonData.sort(function(a, b) {
-   return b.RSI - a.RSI;
- });
 
- // request for RSI data
- const xhr1 = new XMLHttpRequest();
- xhr1.open("GET", `http://localhost:5000/RSI`);
- xhr1.send();
 
- xhr1.onload = function() {
-   const body = JSON.parse(xhr1.responseText); // parse response
-   // console.log(body); 
-   for (let i in body) {
-     let ptDate = body[i]["('Date', '')"];
-     // if ( i == 5 ) console.log(ptDate);
-     for (let t in ticklist) {
-       console.log(i);
-       console.log(ticklist[t]);
-       // console.log("('Volume', '" + ticklist[t] + "')");
-       let ptVolume = body[i][ "('Volume', '" + ticklist[t] + "')" ];
-       let ptHigh = body[i][ "('High', '" + ticklist[t] + "')" ];
-       let ptLow = body[i][ "('Low', '" + ticklist[t] + "')" ];
-       let ptOpen = body[i][ "('Open', '" + ticklist[t] + "')" ];
-       let ptClose = body[i][ "('Close', '" + ticklist[t] + "')" ];
-       let ptAdjClose = body[i][ "('Adj Close', '" + ticklist[t] + "')" ];
-       let ptRSI = body[i][ "('RSI', '" + ticklist[t] + "')" ];
- //       if (i == 2300 && ticklist[t] == 'MSFT') { 
- //         console.log(i);
- //         console.log(ticklist[t]);
- //         console.log(ptDate);
- //         console.log(ptVolume);
- //         console.log(ptHigh);
- //         console.log(ptLow);
- //         console.log(ptOpen);
- //         console.log(ptClose);
- //         console.log(ptAdjClose);
- //         console.log(ptRSI);
- //       } 
-     }
-   }
- }
+  // request for RSI data
 
- // Display the top RSIOBnum tickers and their corresponding values
- for (let i = 0; i < RSIOBnum && i < jsonData.length; i++) {
-   if (jsonData[i].RSI < 70){continue};
-   let stockLine = document.createElement('p');
-   stockLine.textContent = `Ticker: ${jsonData[i].Ticker} | RSI: ${jsonData[i].RSI} | Price: $${jsonData[i].PRICE} `;
-   let stockbox = document.createElement('input');
-   stockbox.type = "value";
-   stockbox.id = `stocknum` + i;
-   stockbox.placeholder = "How many stocks?";
-   stockbox.style.width = 120 + "px";
-   var button = document.createElement('button');
-   button.textContent = 'Add to portfolio';
-   button.addEventListener('click', function(addData) {
-     //code here  
-     let stocksbought = document.getElementById(`stocknum`+i).value; 
-     let titleInput = jsonData[i].Ticker;
-     let moneyInput = jsonData[i].PRICE;
-   
-     let title = jsonData[i].Ticker;
-     let money = ((jsonData[i].PRICE) *(stocksbought));
-   
-     if (title !== "" && !isNaN(money) && money > 0) {
-       dataPoints.push({ title, money });
-       titleInput.value = "";
-       moneyInput.value = "";
-       renderChart();
-       renderDataList();
-     }
+  const xhr1 = new XMLHttpRequest();
+  xhr1.open("GET", `http://localhost:5000/RSI`);
+  xhr1.send();
 
-     console.log(`Button ${i + 1} clicked.`);
-     console.log(`you have added ${stocksbought} stocks of ${jsonData[i].Ticker} to your portfolio`);
-     // You can access jsonData[i] or perform any other actions
-   });
-   stockLine.appendChild(stockbox);
-   stockLine.appendChild(button);
-   textContent.appendChild(stockLine);
- }
+  xhr1.onload = function() {
+    const body = JSON.parse(xhr1.responseText); // parse response
+
+    let ptDate = body[ body.length - 1 ]["('Date', '')"];
+    for (let t in ticklist) {
+      let ptVolume = body[body.length - 1][ "('Volume', '" + ticklist[t] + "')" ];
+      let ptHigh = body[body.length - 1][ "('High', '" + ticklist[t] + "')" ];
+      let ptLow = body[body.length - 1][ "('Low', '" + ticklist[t] + "')" ];
+      let ptOpen = body[body.length - 1][ "('Open', '" + ticklist[t] + "')" ];
+      let ptClose = body[body.length - 1][ "('Close', '" + ticklist[t] + "')" ];
+      let ptAdjClose = body[body.length - 1][ "('Adj Close', '" + ticklist[t] + "')" ];
+      let ptRSI = body[body.length - 1][ ticklist[t] ];
+
+      if (ptRSI > 70) {
+        let stockLine = document.createElement('p');
+        stockLine.textContent = `Ticker: ${ticklist[t]} | RSI: ${ptRSI} | Price: ${ptClose} `;
+        let stockbox = document.createElement('input');
+        stockbox.type = "value";
+        stockbox.id = `stocknum` + i;
+        stockbox.placeholder = "How many stocks?";
+        stockbox.style.width = 120 + "px";
+        var button = document.createElement('button');
+        button.textContent = 'Add to portfolio';
+
+        button.addEventListener('click', function(addData) {
+          let stocksbought = document.getElementById(`stocknum`+i).value; 
+          let titleInput = ticklist[t];
+          let moneyInput = ptClose;
+      
+          let title = ticklist[t];
+          let money = ((ptClose) * (stocksbought));
+        
+          if (title !== "" && !isNaN(money) && money > 0) {
+            dataPoints.push({ title, money });
+            titleInput.value = "";
+            moneyInput.value = "";
+            renderChart();
+            renderDataList();
+            console.log(`Button ${i + 1} clicked.`);
+            console.log(`you have added ${stocksbought} stocks of ${jsonData[i].Ticker} to your portfolio`);
+          }
+        });
+
+        // You can access jsonData[i] or perform any other actions
+        stockLine.appendChild(stockbox);
+        stockLine.appendChild(button);
+        textContent.appendChild(stockLine);
+      }
+    }
+  } 
 });
 
 

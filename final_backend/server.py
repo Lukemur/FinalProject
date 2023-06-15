@@ -98,7 +98,7 @@ def RSI():
     RSI_df = calcRSI(localSPDF)
 
     json_response = RSI_df.to_json(orient="records", indent=2)
-    # print(RSI_df.tail().to_json(orient="records", indent=2))
+    print(RSI_df.tail().to_json(orient="records", indent=2))
 
     return json_response
 
