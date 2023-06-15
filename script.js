@@ -506,9 +506,9 @@ xhr6.onload = function() {
     let ptLow = body[i]['Low'];
     let ptOpen = body[i]['Open'];
     let ptClose = body[i]['Close'];
-    //let ptAdjClose = body[i]['Adj Close'];
-    //let shortEMA = body[i]['EMA_' + timeEMAsp];
-    //let longEMA = body[i]['EMA_' + timeEMAlp];
+    let ptAdjClose = body[i]['Adj Close'];
+    let shortEMA = body[i]['EMA_' + timeEMAsp];
+    let longEMA = body[i]['EMA_' + timeEMAlp];
   }
   var chartData = [];
   for (var i = 0; i < body.length; i++) {
@@ -518,8 +518,8 @@ xhr6.onload = function() {
           body[i].High,
           body[i].Low,
           body[i].Close,
-          //body[i].SMA_20, // Add SMA_20 value to the chart data
-          //body[i].SMA_50 // Add SMA_50 value to the chart data
+          body[i].EMA_20, // Add SMA_20 value to the chart data
+          body[i].EMA_50 // Add SMA_50 value to the chart data
       ]);
   }
   
@@ -533,6 +533,25 @@ xhr6.onload = function() {
       xaxis: 'x',
       yaxis: 'y'
   };
+
+  var traceEMA20 = {
+      x: chartData.map(function(item) { return item[0]; }),
+      y: chartData.map(function(item) { return item[5]; }), // Use SMA_20 values for y-axis
+      mode: 'lines',
+      name: 'EMA_20',
+      xaxis: 'x',
+      yaxis: 'y2'
+  };
+
+  var traceEMA50 = {
+      x: chartData.map(function(item) { return item[0]; }),
+      y: chartData.map(function(item) { return item[6]; }), // Use SMA_50 values for y-axis
+      mode: 'lines',
+      name: 'EMA_50',
+      xaxis: 'x',
+      yaxis: 'y2'
+  };
+
   
   var layout = {
       title: `${tickEMA} EMA Graph`, // + stockname   //how to add stock Symbol
@@ -553,11 +572,11 @@ xhr6.onload = function() {
           side: 'right',
           autorange: true,
           type: 'linear',
-          title: 'SMA'
+          title: 'EMA'
       }
   };
   
-  Plotly.newPlot('chart', [traceCandlestick], layout);
+  Plotly.newPlot('chart', [traceCandlestick, traceEMA20, traceEMA50], layout);
 }
 
      let stockLine = document.createElement('p');
