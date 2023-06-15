@@ -70,8 +70,7 @@ function hidesponch() {
 var scanRSIOB = document.getElementById("stvb1");//create var for RSI overbought
 
 scanRSIOB.addEventListener("click", function() {//Create event listner that prints out the number of stocks searched for according to input value 
-  var RSIOBnum = document.getElementById("stv1").value;
-  console.log("You have searched for " + RSIOBnum + " stocks with an overbought RSI");
+
   clearStockLines();
   hidesponch();
 
@@ -122,7 +121,7 @@ scanRSIOB.addEventListener("click", function() {//Create event listner that prin
             renderChart();
             renderDataList();
             console.log(`Button ${i + 1} clicked.`);
-            console.log(`you have added ${stocksbought} stocks of ${jsonData[i].Ticker} to your portfolio`);
+            console.log(`you have added ${stocksbought} stocks of ${ticklist[i]} to your portfolio`);
           }
         });
 
@@ -139,170 +138,64 @@ scanRSIOB.addEventListener("click", function() {//Create event listner that prin
 var scanRSIUB = document.getElementById("stvb2");//create var for RSI underbought
 
 scanRSIUB.addEventListener("click", function() {//Create event listner that prints out the number of stocks searched for according to input value
- var RSIUBnum = document.getElementById("stv2").value;
- console.log("You have searched for " + RSIUBnum + " stocks with an underbought RSI");
  clearStockLines();
  hidesponch();
 
  const xhr2 = new XMLHttpRequest();
- xhr2.open("GET", `http://localhost:5000/RSI`);
- xhr2.send();
+  xhr2.open("GET", `http://localhost:5000/RSI`);
+  xhr2.send();
 
- xhr2.onload = function() {
-   const body = JSON.parse(xhr2.responseText); // parse response
+  xhr2.onload = function() {
+    const body = JSON.parse(xhr2.responseText); // parse response
 
-   let ptDate = body[ body.length - 1 ]["('Date', '')"];
-   for (let t in ticklist) {
-     let ptVolume = body[body.length - 1][ "('Volume', '" + ticklist[t] + "')" ];
-     let ptHigh = body[body.length - 1][ "('High', '" + ticklist[t] + "')" ];
-     let ptLow = body[body.length - 1][ "('Low', '" + ticklist[t] + "')" ];
-     let ptOpen = body[body.length - 1][ "('Open', '" + ticklist[t] + "')" ];
-     let ptClose = body[body.length - 1][ "('Close', '" + ticklist[t] + "')" ];
-     let ptAdjClose = body[body.length - 1][ "('Adj Close', '" + ticklist[t] + "')" ];
-     let ptRSI = body[body.length - 1][ ticklist[t] ];
+    let ptDate = body[ body.length - 1 ]["('Date', '')"];
+    for (let t in ticklist) {
+      let ptVolume = body[body.length - 1][ "('Volume', '" + ticklist[t] + "')" ];
+      let ptHigh = body[body.length - 1][ "('High', '" + ticklist[t] + "')" ];
+      let ptLow = body[body.length - 1][ "('Low', '" + ticklist[t] + "')" ];
+      let ptOpen = body[body.length - 1][ "('Open', '" + ticklist[t] + "')" ];
+      let ptClose = body[body.length - 1][ "('Close', '" + ticklist[t] + "')" ];
+      let ptAdjClose = body[body.length - 1][ "('Adj Close', '" + ticklist[t] + "')" ];
+      let ptRSI = body[body.length - 1][ ticklist[t] ];
 
-     if (ptRSI < 30) {
-       let stockLine = document.createElement('p');
-       stockLine.textContent = `Ticker: ${ticklist[t]} | RSI: ${ptRSI} | Price: ${ptClose} `;
-       let stockbox = document.createElement('input');
-       stockbox.type = "value";
-       stockbox.id = `stocknum` + i;
-       stockbox.placeholder = "How many stocks?";
-       stockbox.style.width = 120 + "px";
-       var button = document.createElement('button');
-       button.textContent = 'Add to portfolio';
+      if (ptRSI < 30) {
+        let stockLine = document.createElement('p');
+        stockLine.textContent = `Ticker: ${ticklist[t]} | RSI: ${ptRSI} | Price: ${ptClose} `;
+        let stockbox = document.createElement('input');
+        stockbox.type = "value";
+        stockbox.id = `stocknum` + i;
+        stockbox.placeholder = "How many stocks?";
+        stockbox.style.width = 120 + "px";
+        var button = document.createElement('button');
+        button.textContent = 'Add to portfolio';
 
-       button.addEventListener('click', function(addData) {
-         let stocksbought = document.getElementById(`stocknum`+i).value; 
-         let titleInput = ticklist[t];
-         let moneyInput = ptClose;
-     
-         let title = ticklist[t];
-         let money = ((ptClose) * (stocksbought));
-       
-         if (title !== "" && !isNaN(money) && money > 0) {
-           dataPoints.push({ title, money });
-           titleInput.value = "";
-           moneyInput.value = "";
-           renderChart();
-           renderDataList();
-           console.log(`Button ${i + 1} clicked.`);
-           console.log(`you have added ${stocksbought} stocks of ${jsonData[i].Ticker} to your portfolio`);
-         }
-       });
+        button.addEventListener('click', function(addData) {
+          let stocksbought = document.getElementById(`stocknum`+i).value; 
+          let titleInput = ticklist[t];
+          let moneyInput = ptClose;
+      
+          let title = ticklist[t];
+          let money = ((ptClose) * (stocksbought));
+        
+          if (title !== "" && !isNaN(money) && money > 0) {
+            dataPoints.push({ title, money });
+            titleInput.value = "";
+            moneyInput.value = "";
+            renderChart();
+            renderDataList();
+            console.log(`Button ${i + 1} clicked.`);
+            console.log(`you have added ${stocksbought} stocks of ${jsonData[i].Ticker} to your portfolio`);
+          }
+        });
 
-       // You can access jsonData[i] or perform any other actions
-       stockLine.appendChild(stockbox);
-       stockLine.appendChild(button);
-       textContent.appendChild(stockLine);
-     }
-   }
- } 
+        // You can access jsonData[i] or perform any other actions
+        stockLine.appendChild(stockbox);
+        stockLine.appendChild(button);
+        textContent.appendChild(stockLine);
+      }
+    }
+  } 
 });
-
-
-var scanMACDUT = document.getElementById("stvb3");//create var for MACD strong uptrend
-
-scanMACDUT.addEventListener("click", function() {//Create event listner that prints out the number of stocks searched for according to input value
- var MACDUTnum = document.getElementById("stv3").value;
- console.log("You have searched for " + MACDUTnum + " stocks with an strong uptrend for MACD");
- clearStockLines();
- hidesponch();
-
-// Sort the JSON data by MACDUT in descending order
-jsonData.sort(function(a, b) {
- return b.MACD - a.MACD;
-});
-
-// Display the top MACDUTnum tickers and their corresponding values
-for (let i = 0; i < MACDUTnum && i < jsonData.length; i++) {
- let stockLine = document.createElement('p');
- stockLine.textContent = `Ticker: ${jsonData[i].Ticker} | MACD Uptrending: ${jsonData[i].MACD} | Price: ${jsonData[i].PRICE} `;
- let stockbox = document.createElement('input');
- stockbox.type = "value";
- stockbox.id = `stocknum` + i;
- stockbox.placeholder = "How many stocks?";
- stockbox.style.width = 120 + "px";
- var button = document.createElement('button');
- button.textContent = 'Add to portfolio';
- button.addEventListener('click', function(addData) {
-   //code here  
-     let stocksbought = document.getElementById(`stocknum`+i).value; 
-     let titleInput = jsonData[i].Ticker;
-     let moneyInput = jsonData[i].PRICE;
-   
-     let title = jsonData[i].Ticker;
-     let money = ((jsonData[i].PRICE) *(stocksbought));
-   
-     if (title !== "" && !isNaN(money) && money > 0) {
-       dataPoints.push({ title, money });
-       titleInput.value = "";
-       moneyInput.value = "";
-       renderChart();
-       renderDataList();
-     }
-
-   console.log(`Button ${i + 1} clicked.`);
-   console.log(`you have added ${stocksbought} stocks of ${jsonData[i].Ticker} to your portfolio`);
-   // You can access jsonData[i] or perform any other actions
- });
- stockLine.appendChild(stockbox);
- stockLine.appendChild(button);
- textContent.appendChild(stockLine);
-}
-});
-
-var scanMACDDT = document.getElementById("stvb4");//create var for MACD strong downtrend
-
-scanMACDDT.addEventListener("click", function() {//Create event listner that prints out the number of stocks searched for according to input value
- var MACDDTnum = document.getElementById("stv4").value;
- console.log("You have searched for " + MACDDTnum + " stocks with an strong downtrend for MACD");
- clearStockLines();
- hidesponch();
-
-// Sort the JSON data by MACDDT in descending order
-jsonData.sort(function(a, b) {
- return b.MACDDT - a.MACDDT;
-});
-
-// Display the top MACDDTnum tickers and their corresponding values
-for (let i = 0; i < MACDDTnum && i < jsonData.length; i++) {
- let stockLine = document.createElement('p');
- stockLine.textContent = `Ticker: ${jsonData[i].Ticker} | MACD Downtrend: ${jsonData[i].MACDDT} | Price: ${jsonData[i].PRICE} `;
- let stockbox = document.createElement('input');
- stockbox.type = "value";
- stockbox.id = `stocknum` + i;
- stockbox.placeholder = "How many stocks?";
- stockbox.style.width = 120 + "px";
- var button = document.createElement('button');
- button.textContent = 'Add to portfolio';
- button.addEventListener('click', function(addData) {
-   //code here  
-     let stocksbought = document.getElementById(`stocknum`+i).value; 
-     let titleInput = jsonData[i].Ticker;
-     let moneyInput = jsonData[i].PRICE;
-   
-     let title = jsonData[i].Ticker;
-     let money = ((jsonData[i].PRICE) *(stocksbought));
-   
-     if (title !== "" && !isNaN(money) && money > 0) {
-       dataPoints.push({ title, money });
-       titleInput.value = "";
-       moneyInput.value = "";
-       renderChart();
-       renderDataList();
-     }
-
-   console.log(`Button ${i + 1} clicked.`);
-   console.log(`you have added ${stocksbought} stocks of ${jsonData[i].Ticker} to your portfolio`);
-   // You can access jsonData[i] or perform any other actions
- });
- stockLine.appendChild(stockbox);
- stockLine.appendChild(button);
- textContent.appendChild(stockLine);
-}
-});
-
 
 var scanSMA = document.getElementById("SMAb");
 
