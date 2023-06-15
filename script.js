@@ -538,7 +538,7 @@ xhr6.onload = function() {
       x: chartData.map(function(item) { return item[0]; }),
       y: chartData.map(function(item) { return item[5]; }), // Use SMA_20 values for y-axis
       mode: 'lines',
-      name: 'EMA_20',
+      name: `${timeEMAsp}`,
       xaxis: 'x',
       yaxis: 'y2'
   };
@@ -547,7 +547,7 @@ xhr6.onload = function() {
       x: chartData.map(function(item) { return item[0]; }),
       y: chartData.map(function(item) { return item[6]; }), // Use SMA_50 values for y-axis
       mode: 'lines',
-      name: 'EMA_50',
+      name: `${timeEMAlp}`,
       xaxis: 'x',
       yaxis: 'y2'
   };
